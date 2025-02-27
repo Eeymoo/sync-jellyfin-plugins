@@ -1,0 +1,29 @@
+name: Sync Nightly Workflow
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 每天晚上 24:00 (UTC 时间) 执行
+  workflow_dispatch:  # 支持通过 URL 手动触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js (latest)
+      uses: actions/setup-node@v3
+      with:
+        node-version: 'latest'  # 使用最新的 Node.js 版本
+        cache: 'pnpm'
+
+    - name: Install pnpm
+      run: npm install -g pnpm
+
+    - name: Install dependencies
+      run: pnpm install
+
+    - name: Run sync script
+      run: pnpm run sync

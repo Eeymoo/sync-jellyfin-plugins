@@ -1,0 +1,79 @@
+[
+  {
+    "name": "Jellyfin",
+    "originalUrl": "https://repo.jellyfin.org/files/plugin/manifest.json",
+    "repositoryUrl": "",
+    "timestamp": "2025-02-26T10:06:59.861Z",
+    "status": "error"
+  },
+  {
+    "name": "Jellyfin Unstable",
+    "originalUrl": "https://repo.jellyfin.org/files/plugin-unstable/manifest.json",
+    "repositoryUrl": "",
+    "timestamp": "2025-02-26T10:06:59.882Z",
+    "status": "error"
+  },
+  {
+    "name": "9p4's Single-Sign-On (SSO) Repo",
+    "originalUrl": "https://raw.githubusercontent.com/9p4/jellyfin-plugin-sso/manifest-release/manifest.json",
+    "repositoryUrl": "",
+    "timestamp": "2025-02-26T10:06:59.883Z",
+    "status": "error"
+  },
+  {
+    "name": "Ani-Sync Repo",
+    "originalUrl": "https://raw.githubusercontent.com/vosmiic/jellyfin-ani-sync/master/manifest.json",
+    "repositoryUrl": "https://jellyfin-mirror.oss-cn-wuhan-lr/plugins/Ani-Sync Repo/10.9.9.-.ani-sync_3.4.0.0.zip",
+    "timestamp": "2025-02-26T10:06:59.884Z",
+    "status": "error"
+  },
+  {
+    "name": "danieladov's Repo",
+    "originalUrl": "https://raw.githubusercontent.com/danieladov/JellyfinPluginManifest/master/manifest.json",
+    "repositoryUrl": "",
+    "timestamp": "2025-02-26T10:06:59.884Z",
+    "status": "error"
+  },
+  {
+    "name": "dkanada's Repo",
+    "originalUrl": "https://raw.githubusercontent.com/dkanada/jellyfin-plugin-intros/master/manifest.json",
+    "repositoryUrl": "",
+    "timestamp": "2025-02-26T10:06:59.885Z",
+    "status": "error"
+  },
+  {
+    "name": "k-matti's Repo",
+    "originalUrl": "https://raw.githubusercontent.com/k-matti/jellyfin-plugin-repository/master/manifest.json",
+    "repositoryUrl": "",
+    "timestamp": "2025-02-26T10:06:59.885Z",
+    "status": "error"
+  },
+  {
+    "name": "LinFor's Repo",
+    "originalUrl": "https://raw.githubusercontent.com/LinFor/jellyfin-plugin-kinopoisk/master/dist/manifest.json",
+    "repositoryUrl": "",
+    "timestamp": "2025-02-26T10:06:59.886Z",
+    "status": "error"
+  },
+  {
+    "name": "LizardByte's Repo",
+    "originalUrl": "https://app.lizardbyte.dev/jellyfin-plugin-repo/manifest.json",
+    "repositoryUrl": "https://jellyfin-mirror.oss-cn-wuhan-lr/plugins/LizardByte's Repo/themerr-jellyfin.zip",
+    "timestamp": "2025-02-26T10:06:59.887Z",
+    "status": "success"
+  },
+  {
+    "name": "ShokoAnime's Repo",
+    "originalUrl": "https://raw.githubusercontent.com/ShokoAnime/Shokofin/metadata/stable/manifest.json",
+    "repositoryUrl": "https://jellyfin-mirror.oss-cn-wuhan-lr/plugins/ShokoAnime's Repo/shoko_5.0.0.0.zip",
+    "timestamp": "2025-02-26T10:06:59.887Z",
+    "status": "success"
+  },
+  {
+    "name": "TubeArchivist's Repo",
+    "originalUrl": "https://raw.githubusercontent.com/tubearchivist/tubearchivist-jf-plugin/master/manifest.json",
+    "repositoryUrl": "",
+    "timestamp": "2025-02-26T10:06:59.888Z",
+    "status": "error"
+  }
+]
