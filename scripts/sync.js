@@ -133,29 +133,46 @@ async function processManifestItem(item) {
         status: 'error',
     };
 
+    const itemName = formatName(item.name);
+
     try {
         const response = await axios.get(item.repositoryUrl);
         const projects = response.data;
+        const resultProjects = [];
+
 
         for (const project of projects) {
             const recentVersions = project.versions
                 .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
                 .slice(0, 3);
-
+            const resultVersions = [];
             for (const version of recentVersions) {
                 const fileName = path.basename(version.sourceUrl);
-                const localFilePath = path.join(downloadDir, fileName);
+                const localFilePath = path.join(downloadDir, itemName, fileName);
 
                 await downloadFile(version.sourceUrl, localFilePath);
 
-                const ossKey = `plugins/${item.name}/${fileName}`;
+                const ossKey = `plugins/${itemName}/${fileName}`;
                 await uploadFileToOSS(localFilePath, ossKey);
-
-                result.repositoryUrl = `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}/${ossKey}`;
+                resultVersions.push({
+                    ...version,
+                    sourceUrl: `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}/${ossKey}`
+                })
             }
-
-            result.status = 'success';
+            resultProjects.push({
+                ...project,
+                versions: resultVersions
+            })
         }
+
+
+        const localFilePath = path.join(downloadDir, itemName, 'manifest.json');
+        const ossKey = `plugins/${itemName}/manifest.json`;
+        fs.writeFileSync(localFilePath, JSON.stringify(resultProjects, null, 2));
+        await uploadFileToOSS(localFilePath, ossKey);
+        result.repositoryUrl = `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}/${ossKey}`;
+        result.status = 'success';
+
     } catch (error) {
         console.error(`Error processing ${item.name}:`, error.message);
     }
@@ -193,7 +210,15 @@ async function processManifest() {
     mainProgressBar.stop();
 
     fs.writeFileSync('./manifest-list.json', JSON.stringify(newManifest, null, 2));
+    console.log('./manifest-list.json:\n', JSON.stringify(newManifest, null, 2));
     console.log('New manifest-list.json generated successfully.');
 }
 
+function formatName(input) {
+    let formatted = input.replace(/[^\w\s]/g, '');
+    
+    formatted = formatted.replace(/\s+/g, '_');
+    
+    return formatted;
+}
 processManifest();
