@@ -143,7 +143,7 @@ async function processManifestItem(item) {
         const downloadDirPath = path.join(downloadDir, itemName);
 
         ensureDir(downloadDirPath);
-        
+
         for (const project of projects) {
             const recentVersions = project.versions
                 .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
@@ -212,6 +212,16 @@ async function processManifest() {
 
     mainProgressBar.stop();
 
+    const filePath = './template/README.md';
+    const oldContent = `###########
+Repo List
+###########`;
+    const newContent = newManifest.map(item => `- **[${item.name}](${item.originalUrl})** ${item.timestamp}
+\`\`\`
+${item.originalUrl}
+\`\`\``);
+
+    replaceFileContentSync(filePath, oldContent, newContent);
     fs.writeFileSync('./manifest-list.json', JSON.stringify(newManifest, null, 2));
     console.log('./manifest-list.json:\n', JSON.stringify(newManifest, null, 2));
     console.log('New manifest-list.json generated successfully.');
@@ -224,4 +234,28 @@ function formatName(input) {
     
     return formatted;
 }
+
+
+/**
+ * @param {string} filePath
+ * @param {string} oldContent
+ * @param {string} newContent
+ * @returns {void}
+ */
+function replaceFileContentSync(filePath, oldContent, newContent) {
+    const absolutePath = path.resolve(filePath);
+
+    try {
+        const data = fs.readFileSync(absolutePath, 'utf8');
+
+        const updatedContent = data.replace(oldContent, newContent);
+
+        fs.writeFileSync(absolutePath, updatedContent, 'utf8');
+
+        console.log('文件内容已成功更新！');
+    } catch (err) {
+        throw new Error(`文件操作失败: ${err.message}`);
+    }
+}
+
 processManifest();
