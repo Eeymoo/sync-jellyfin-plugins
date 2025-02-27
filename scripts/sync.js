@@ -156,7 +156,7 @@ async function processManifestItem(item) {
                 await uploadFileToOSS(localFilePath, ossKey);
                 resultVersions.push({
                     ...version,
-                    sourceUrl: `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}/${ossKey}`
+                    sourceUrl: `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/${ossKey}`
                 })
             }
             resultProjects.push({
@@ -170,7 +170,7 @@ async function processManifestItem(item) {
         const ossKey = `plugins/${itemName}/manifest.json`;
         fs.writeFileSync(localFilePath, JSON.stringify(resultProjects, null, 2));
         await uploadFileToOSS(localFilePath, ossKey);
-        result.repositoryUrl = `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}/${ossKey}`;
+        result.repositoryUrl = `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/${ossKey}`;
         result.status = 'success';
 
     } catch (error) {
