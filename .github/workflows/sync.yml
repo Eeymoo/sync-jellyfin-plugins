@@ -6,6 +6,12 @@ on:
   workflow_dispatch:  # 支持通过 URL 手动触发
 
 jobs:
+  env:
+    OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
+    OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
+    OSS_BUCKET_NAME: ${{ secrets.OSS_BUCKET_NAME }}
+    OSS_ENDPOINT: ${{ secrets.OSS_ENDPOINT }}
+
   build:
     runs-on: ubuntu-latest
 
