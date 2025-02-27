@@ -212,16 +212,20 @@ async function processManifest() {
 
     mainProgressBar.stop();
 
-    const filePath = './template/README.md';
+    const templateFilePath = './template/README.md';
+    const filePath = './README.md';
     const oldContent = `###########
 Repo List
 ###########`;
-    const newContent = newManifest.map(item => `- **[${item.name}](${item.originalUrl})** ${item.timestamp}
+    const newContent = newManifest.map(item => `
+- **[${item.name}](${item.originalUrl})** ${item.timestamp}
+
 \`\`\`
 ${item.originalUrl}
-\`\`\``);
+\`\`\`
+`).join('\n');
 
-    replaceFileContentSync(filePath, oldContent, newContent);
+    replaceFileContentSync(templateFilePath, filePath, oldContent, newContent);
     fs.writeFileSync('./manifest-list.json', JSON.stringify(newManifest, null, 2));
     console.log('./manifest-list.json:\n', JSON.stringify(newManifest, null, 2));
     console.log('New manifest-list.json generated successfully.');
@@ -242,19 +246,20 @@ function formatName(input) {
  * @param {string} newContent
  * @returns {void}
  */
-function replaceFileContentSync(filePath, oldContent, newContent) {
+function replaceFileContentSync(templateFilePath, filePath, oldContent, newContent) {
+    const absoluteTemplatePath = path.resolve(templateFilePath);
     const absolutePath = path.resolve(filePath);
 
     try {
-        const data = fs.readFileSync(absolutePath, 'utf8');
+        const data = fs.readFileSync(absoluteTemplatePath, 'utf8');
 
         const updatedContent = data.replace(oldContent, newContent);
 
         fs.writeFileSync(absolutePath, updatedContent, 'utf8');
 
-        console.log('文件内容已成功更新！');
+        console.log('The file content has been successfully updated!');
     } catch (err) {
-        throw new Error(`文件操作失败: ${err.message}`);
+        throw new Error(`File operation failed: ${err.message}`);
     }
 }
 
