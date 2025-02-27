@@ -72,6 +72,7 @@ async function downloadFile(url, filePath) {
         });
         writer.on('error', (err) => {
             downloadProgressBar.stop();
+            console.log(err);
             reject(err);
         });
     });
