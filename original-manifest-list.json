@@ -45,7 +45,7 @@
     },
     {
       "name": "IntroSkipper's Repo",
-      "repositoryUrl": "https://manifest.intro-skipper.org/manifest.json"
+      "repositoryUrl": "https://raw.githubusercontent.com/intro-skipper/intro-skipper/refs/heads/10.10/manifest.json"
     }
   ]
   
