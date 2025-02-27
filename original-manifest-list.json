@@ -42,6 +42,10 @@
     {
       "name": "TubeArchivist's Repo",
       "repositoryUrl": "https://raw.githubusercontent.com/tubearchivist/tubearchivist-jf-plugin/master/manifest.json"
+    },
+    {
+      "name": "IntroSkipper's Repo",
+      "repositoryUrl": "https://manifest.intro-skipper.org/manifest.json"
     }
   ]
   
