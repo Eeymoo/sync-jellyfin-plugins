@@ -12,8 +12,8 @@ jobs:
     env:
       OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
       OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
-      OSS_BUCKET_NAME: ${{ secrets.OSS_BUCKET_NAME }}
-      OSS_ENDPOINT: ${{ secrets.OSS_ENDPOINT }}
+      OSS_BUCKET_NAME: jellyfin-mirror
+      OSS_ENDPOINT: oss-cn-wuhan-lr
 
     runs-on: ubuntu-latest
 
