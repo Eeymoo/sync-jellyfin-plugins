@@ -25,7 +25,7 @@ const downloadDir = path.join(__dirname, '../download');
  * @function ensureDownloadDir
  * @returns {void}
  */
-function ensureDownloadDir() {
+function ensureDir(downloadDir) {
     if (!fs.existsSync(downloadDir)) {
         fs.mkdirSync(downloadDir);
     }
@@ -140,8 +140,10 @@ async function processManifestItem(item) {
         const response = await axios.get(item.repositoryUrl);
         const projects = response.data;
         const resultProjects = [];
+        const downloadDirPath = path.join(downloadDir, itemName);
 
-
+        ensureDir(downloadDirPath);
+        
         for (const project of projects) {
             const recentVersions = project.versions
                 .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
@@ -189,7 +191,7 @@ async function processManifestItem(item) {
  * @returns {Promise<void>} - A promise that resolves when all manifest items are processed.
  */
 async function processManifest() {
-    ensureDownloadDir();
+    ensureDir(downloadDir);
 
     const mainProgressBar = new cliProgress.SingleBar({
         format: 'Main Progress |{bar}| {percentage}% | {value}/{total} | {name}',
