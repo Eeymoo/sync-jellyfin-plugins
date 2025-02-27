@@ -221,7 +221,7 @@ Repo List
 - **[${item.name}](${item.originalUrl})** ${item.timestamp}
 
 \`\`\`
-${item.originalUrl}
+${item.repositoryUrl || item.originalUrl}
 \`\`\`
 `).join('\n');
 
