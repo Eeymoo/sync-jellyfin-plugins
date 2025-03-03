@@ -4,6 +4,11 @@
 
 `sync-jellyfin-plugins` 是一个专门为 Jellyfin 用户设计的插件同步仓库项目，**仅适用于中国大陆地区**。该项目旨在提供一个稳定、高效的插件同步服务，确保用户能够及时获取到最新的插件版本。
 
+
+## 上游
+
+镜像的基础上游同步地址是 [Plugins | Jellyfin](https://jellyfin.org/docs/general/server/plugins/#official-jellyfin-plugin-repositories) 获取的 `manifest.json` 中的地址，也有一些常用的例如 `Metashark` 等选取了官方仓库作为上游同步仓库。
+
 ## 主要功能
 
 - **每晚 24 点同步镜像仓库**：项目会在每天晚上 24 点自动同步 Jellyfin 插件仓库，确保插件库始终保持最新。
