@@ -146,6 +146,13 @@ https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Metashark_Repo/mani
 
 根据需要，你可以添加更多支持的 Repo 到 Jellyfin 的插件仓库设置中。
 
+## 路线图
+
+> 镜像仓库要什么路线图?
+
+1. 使用 AI 大模型翻译 **description** 和 **changelog** 字段；
+2. 使用 阿里云 FC，支持手动同步镜像的功能；
+
 ## 贡献
 
 欢迎提交 Pull Request 来改进本项目。如果你有任何问题或建议，请通过 Issues 页面进行反馈。
