@@ -49,6 +49,6 @@
   },
   {
     "name": "Metashark' Repo",
-    "repositoryUrl": "https://gitee.com/cwhzy/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json"
+    "repositoryUrl": "https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json"
   }
 ]
