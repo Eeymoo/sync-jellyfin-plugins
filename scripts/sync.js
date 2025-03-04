@@ -130,7 +130,7 @@ async function processManifestItem(item) {
         name: item.name,
         originalUrl: item.repositoryUrl,
         repositoryUrl: '',
-        timestamp: new Date().toISOString(),
+        timestamp: getNewBeijingDate().toISOString(),
         status: 'error',
     };
 
@@ -261,6 +261,17 @@ function replaceFileContentSync(templateFilePath, filePath, oldContent, newConte
     } catch (err) {
         throw new Error(`File operation failed: ${err.message}`);
     }
+}
+
+/**
+ * get new Beijing Date
+ * @returns new Beijing Date
+ */
+function getNewBeijingDate () {
+    const UTC = new Date().getTime();
+    const offsetMS = 8 * 60 * 60 * 1000;
+    const newBeijingDate = new Date(UTC + offsetMS);
+    return newBeijingDate
 }
 
 processManifest();
