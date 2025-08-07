@@ -15,11 +15,7 @@ Repo List
 ### 步骤二：添加镜像源
 
 在“插件存储库”页面，点击“添加”按钮。  
-在弹出的对话框中填写如下地址：
-
-<CopyButton text="https://mirror.example.com/jellyfin/plugins/repo.json" />
-
-你可以点击上方“一键复制”按钮，直接复制仓库地址。
+在弹出的对话框中填写仓库地址。
 
 ### 步骤三：保存并刷新
 
