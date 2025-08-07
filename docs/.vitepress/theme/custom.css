@@ -1,0 +1,12 @@
+:root {
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(90deg, #AA5CC3 0%, #00A4DC 100%);
+  --vp-c-bg: #101010;
+  --vp-c-brand-1: #00A4DC;
+}
+
+.vp-home-hero-image {
+  background: #000B25;
+  border-radius: 20px;
+  padding: 16px;
+}

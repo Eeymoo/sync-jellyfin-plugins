@@ -33,3 +33,8 @@ temp/
 
 # 下载目录
 download/
+
+# 忽略 VitePress 相关文件
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+docs/.vitepress/temp/

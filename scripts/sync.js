@@ -226,6 +226,11 @@ ${item.repositoryUrl || item.originalUrl}
 `).join('\n');
 
     replaceFileContentSync(templateFilePath, filePath, oldContent, newContent);
+
+    const docsTemplateFilePath = './template/get-started.md';
+    const docsFilePath = './docs/get-started.md';
+    replaceFileContentSync(docsTemplateFilePath, docsFilePath, oldContent, newContent);
+
     fs.writeFileSync('./manifest-list.json', JSON.stringify(newManifest, null, 2));
     console.log('./manifest-list.json:\n', JSON.stringify(newManifest, null, 2));
     console.log('New manifest-list.json generated successfully.');

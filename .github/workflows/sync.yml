@@ -34,6 +34,17 @@ jobs:
 
     - name: Run sync script
       run: pnpm run sync
+
+    # 生成文档
+    - name: Build Docs
+      run: pnpm run docs:build
+
+    # 部署到 GitHub Pages
+    - name: Deploy Docs to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: docs/.vitepress/dist
     
     - name: Commit and push changes
       run: |
