@@ -1,96 +1,113 @@
 ## 镜像列表
 
+<RepoItem
+  name="Jellyfin"
+  originalUrl="https://repo.jellyfin.org/files/plugin/manifest.json"
+  repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Jellyfin/manifest.json"
+  timestamp="2025-08-08T12:25:49.010Z"
+  status="success"
+  :successRate="100"
+/>
+<RepoItem
+  name="Jellyfin Unstable"
+  originalUrl="https://repo.jellyfin.org/files/plugin-unstable/manifest.json"
+  repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Jellyfin_Unstable/manifest.json"
+  timestamp="2025-08-08T12:25:49.030Z"
+  status="success"
+  :successRate="100"
+/>
+<RepoItem
+  name="Ani-Sync Repo"
+  originalUrl="https://raw.githubusercontent.com/vosmiic/jellyfin-ani-sync/master/manifest.json"
+  repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/AniSync_Repo/manifest.json"
+  timestamp="2025-08-08T12:25:49.032Z"
+  status="success"
+  :successRate="100"
+/>
+<RepoItem
+  name="dkanada's Repo"
+  originalUrl="https://raw.githubusercontent.com/dkanada/jellyfin-plugin-intros/master/manifest.json"
+  repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/dkanadas_Repo/manifest.json"
+  timestamp="2025-08-08T12:25:49.034Z"
+  status="success"
+  :successRate="100"
+/>
+<RepoItem
+  name="ShokoAnime's Repo"
+  originalUrl="https://raw.githubusercontent.com/ShokoAnime/Shokofin/metadata/stable/manifest.json"
+  repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/ShokoAnimes_Repo/manifest.json"
+  timestamp="2025-08-08T12:25:49.037Z"
+  status="success"
+  :successRate="100"
+/>
+<RepoItem
+  name="TubeArchivist's Repo"
+  originalUrl="https://raw.githubusercontent.com/tubearchivist/tubearchivist-jf-plugin/master/manifest.json"
+  repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/TubeArchivists_Repo/manifest.json"
+  timestamp="2025-08-08T12:25:49.038Z"
+  status="success"
+  :successRate="100"
+/>
+<RepoItem
+  name="IntroSkipper's Repo"
+  originalUrl="https://manifest.intro-skipper.org/manifest.json"
+  repositoryUrl="https://manifest.intro-skipper.org/manifest.json"
+  timestamp="2025-08-08T12:25:49.039Z"
+  status="error"
+  :successRate="0"
+/>
+<RepoItem
+  name="9p4's Single-Sign-On (SSO) Repo"
+  originalUrl="https://raw.githubusercontent.com/9p4/jellyfin-plugin-sso/manifest-release/manifest.json"
+  repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/9p4s_SingleSignOn_SSO_Repo/manifest.json"
+  timestamp="2025-08-08T12:25:49.031Z"
+  status="success"
+  :successRate="100"
+/>
+<RepoItem
+  name="danieladov's Repo"
+  originalUrl="https://raw.githubusercontent.com/danieladov/JellyfinPluginManifest/master/manifest.json"
+  repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/danieladovs_Repo/manifest.json"
+  timestamp="2025-08-08T12:25:49.033Z"
+  status="success"
+  :successRate="100"
+/>
+<RepoItem
+  name="k-matti's Repo"
+  originalUrl="https://raw.githubusercontent.com/k-matti/jellyfin-plugin-repository/master/manifest.json"
+  repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/kmattis_Repo/manifest.json"
+  timestamp="2025-08-08T12:25:49.035Z"
+  status="success"
+  :successRate="100"
+/>
+<RepoItem
+  name="LinFor's Repo"
+  originalUrl="https://raw.githubusercontent.com/LinFor/jellyfin-plugin-kinopoisk/master/dist/manifest.json"
+  repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/LinFors_Repo/manifest.json"
+  timestamp="2025-08-08T12:25:49.035Z"
+  status="success"
+  :successRate="100"
+/>
+<RepoItem
+  name="LizardByte's Repo"
+  originalUrl="https://app.lizardbyte.dev/jellyfin-plugin-repo/manifest.json"
+  repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/LizardBytes_Repo/manifest.json"
+  timestamp="2025-08-08T12:25:49.036Z"
+  status="success"
+  :successRate="100"
+/>
+<RepoItem
+  name="Metashark' Repo"
+  originalUrl="https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json"
+  repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Metashark_Repo/manifest.json"
+  timestamp="2025-08-08T12:25:49.040Z"
+  status="success"
+  :successRate="100"
+/>
 
-- **[Jellyfin](https://repo.jellyfin.org/files/plugin/manifest.json)** 2025-08-08T00:16:49.651Z
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Jellyfin/manifest.json
-```
-
-
-- **[Jellyfin Unstable](https://repo.jellyfin.org/files/plugin-unstable/manifest.json)** 2025-08-08T00:16:49.672Z
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Jellyfin_Unstable/manifest.json
-```
-
-
-- **[9p4's Single-Sign-On (SSO) Repo](https://raw.githubusercontent.com/9p4/jellyfin-plugin-sso/manifest-release/manifest.json)** 2025-08-08T00:16:49.673Z
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/9p4s_SingleSignOn_SSO_Repo/manifest.json
-```
-
-
-- **[Ani-Sync Repo](https://raw.githubusercontent.com/vosmiic/jellyfin-ani-sync/master/manifest.json)** 2025-08-08T00:16:49.674Z
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/AniSync_Repo/manifest.json
-```
-
-
-- **[danieladov's Repo](https://raw.githubusercontent.com/danieladov/JellyfinPluginManifest/master/manifest.json)** 2025-08-08T00:16:49.675Z
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/danieladovs_Repo/manifest.json
-```
-
-
-- **[dkanada's Repo](https://raw.githubusercontent.com/dkanada/jellyfin-plugin-intros/master/manifest.json)** 2025-08-08T00:16:49.676Z
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/dkanadas_Repo/manifest.json
-```
-
-
-- **[k-matti's Repo](https://raw.githubusercontent.com/k-matti/jellyfin-plugin-repository/master/manifest.json)** 2025-08-08T00:16:49.677Z
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/kmattis_Repo/manifest.json
-```
-
-
-- **[LinFor's Repo](https://raw.githubusercontent.com/LinFor/jellyfin-plugin-kinopoisk/master/dist/manifest.json)** 2025-08-08T00:16:49.678Z
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/LinFors_Repo/manifest.json
-```
-
-
-- **[LizardByte's Repo](https://app.lizardbyte.dev/jellyfin-plugin-repo/manifest.json)** 2025-08-08T00:16:49.678Z
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/LizardBytes_Repo/manifest.json
-```
-
-
-- **[ShokoAnime's Repo](https://raw.githubusercontent.com/ShokoAnime/Shokofin/metadata/stable/manifest.json)** 2025-08-08T00:16:49.680Z
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/ShokoAnimes_Repo/manifest.json
-```
-
-
-- **[TubeArchivist's Repo](https://raw.githubusercontent.com/tubearchivist/tubearchivist-jf-plugin/master/manifest.json)** 2025-08-08T00:16:49.681Z
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/TubeArchivists_Repo/manifest.json
-```
-
-
-- **[IntroSkipper's Repo](https://manifest.intro-skipper.org/manifest.json)** 2025-08-08T00:16:49.682Z
-
-```
-https://manifest.intro-skipper.org/manifest.json
-```
-
-
-- **[Metashark' Repo](https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json)** 2025-08-08T00:16:49.682Z
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Metashark_Repo/manifest.json
-```
-
+<script setup>
+import RepoItem from './.vitepress/components/RepoItem.vue'
+</script>
 
 ## 使用方法
 
@@ -102,12 +119,12 @@ https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Metashark_Repo/mani
 
 ### 步骤二：添加镜像源
 
-在“插件存储库”页面，点击“添加”按钮。  
+在"插件存储库"页面，点击"添加"按钮。  
 在弹出的对话框中填写仓库地址。
 
 ### 步骤三：保存并刷新
 
-点击“确定”或“保存”，存储库将会添加到列表中。  
+点击"确定"或"保存"，存储库将会添加到列表中。  
 稍等片刻，插件列表会自动刷新为最新的镜像源内容。
 
 ### 常见问题

@@ -58,94 +58,133 @@ git clone https://github.com/Eeymoo/sync-jellyfin-plugins.git
 本仓库支持多种插件 Repo 的同步，以下是一些推荐的插件仓库及其 URL。你可以将以下 URL 添加到 Jellyfin 的插件仓库设置中，以使用这些 Repo 的插件：
 
 
-- **[Jellyfin](https://repo.jellyfin.org/files/plugin/manifest.json)** 2025-08-08T00:16:49.651Z
+- **[Jellyfin](https://repo.jellyfin.org/files/plugin/manifest.json)** 2025-08-08T12:25:49.010Z
+  - **标签**: `official`, `stable`
+  - **状态**: ✅ 成功
+  - **成功率**: 100%
 
 ```
-https://repo.jellyfin.org/files/plugin/manifest.json
-```
-
-
-- **[Jellyfin Unstable](https://repo.jellyfin.org/files/plugin-unstable/manifest.json)** 2025-08-08T00:16:49.672Z
-
-```
-https://repo.jellyfin.org/files/plugin-unstable/manifest.json
+https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Jellyfin/manifest.json
 ```
 
 
-- **[9p4's Single-Sign-On (SSO) Repo](https://raw.githubusercontent.com/9p4/jellyfin-plugin-sso/manifest-release/manifest.json)** 2025-08-08T00:16:49.673Z
+- **[Jellyfin Unstable](https://repo.jellyfin.org/files/plugin-unstable/manifest.json)** 2025-08-08T12:25:49.030Z
+  - **标签**: `official`, `unstable`, `beta`
+  - **状态**: ✅ 成功
+  - **成功率**: 100%
 
 ```
-https://raw.githubusercontent.com/9p4/jellyfin-plugin-sso/manifest-release/manifest.json
-```
-
-
-- **[Ani-Sync Repo](https://raw.githubusercontent.com/vosmiic/jellyfin-ani-sync/master/manifest.json)** 2025-08-08T00:16:49.674Z
-
-```
-https://raw.githubusercontent.com/vosmiic/jellyfin-ani-sync/master/manifest.json
+https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Jellyfin_Unstable/manifest.json
 ```
 
 
-- **[danieladov's Repo](https://raw.githubusercontent.com/danieladov/JellyfinPluginManifest/master/manifest.json)** 2025-08-08T00:16:49.675Z
+- **[9p4's Single-Sign-On (SSO) Repo](https://raw.githubusercontent.com/9p4/jellyfin-plugin-sso/manifest-release/manifest.json)** 2025-08-08T12:25:49.031Z
+  - **标签**: `authentication`, `sso`, `third-party`
+  - **状态**: ✅ 成功
+  - **成功率**: 100%
 
 ```
-https://raw.githubusercontent.com/danieladov/JellyfinPluginManifest/master/manifest.json
-```
-
-
-- **[dkanada's Repo](https://raw.githubusercontent.com/dkanada/jellyfin-plugin-intros/master/manifest.json)** 2025-08-08T00:16:49.676Z
-
-```
-https://raw.githubusercontent.com/dkanada/jellyfin-plugin-intros/master/manifest.json
+https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/9p4s_SingleSignOn_SSO_Repo/manifest.json
 ```
 
 
-- **[k-matti's Repo](https://raw.githubusercontent.com/k-matti/jellyfin-plugin-repository/master/manifest.json)** 2025-08-08T00:16:49.677Z
+- **[Ani-Sync Repo](https://raw.githubusercontent.com/vosmiic/jellyfin-ani-sync/master/manifest.json)** 2025-08-08T12:25:49.032Z
+  - **标签**: `anime`, `sync`, `metadata`, `third-party`, `official-community`
+  - **状态**: ✅ 成功
+  - **成功率**: 100%
 
 ```
-https://raw.githubusercontent.com/k-matti/jellyfin-plugin-repository/master/manifest.json
-```
-
-
-- **[LinFor's Repo](https://raw.githubusercontent.com/LinFor/jellyfin-plugin-kinopoisk/master/dist/manifest.json)** 2025-08-08T00:16:49.678Z
-
-```
-https://raw.githubusercontent.com/LinFor/jellyfin-plugin-kinopoisk/master/dist/manifest.json
+https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/AniSync_Repo/manifest.json
 ```
 
 
-- **[LizardByte's Repo](https://app.lizardbyte.dev/jellyfin-plugin-repo/manifest.json)** 2025-08-08T00:16:49.678Z
+- **[danieladov's Repo](https://raw.githubusercontent.com/danieladov/JellyfinPluginManifest/master/manifest.json)** 2025-08-08T12:25:49.033Z
+  - **标签**: `third-party`, `community`
+  - **状态**: ✅ 成功
+  - **成功率**: 100%
 
 ```
-https://app.lizardbyte.dev/jellyfin-plugin-repo/manifest.json
-```
-
-
-- **[ShokoAnime's Repo](https://raw.githubusercontent.com/ShokoAnime/Shokofin/metadata/stable/manifest.json)** 2025-08-08T00:16:49.680Z
-
-```
-https://raw.githubusercontent.com/ShokoAnime/Shokofin/metadata/stable/manifest.json
+https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/danieladovs_Repo/manifest.json
 ```
 
 
-- **[TubeArchivist's Repo](https://raw.githubusercontent.com/tubearchivist/tubearchivist-jf-plugin/master/manifest.json)** 2025-08-08T00:16:49.681Z
+- **[dkanada's Repo](https://raw.githubusercontent.com/dkanada/jellyfin-plugin-intros/master/manifest.json)** 2025-08-08T12:25:49.034Z
+  - **标签**: `intros`, `video`, `third-party`, `official-community`
+  - **状态**: ✅ 成功
+  - **成功率**: 100%
 
 ```
-https://raw.githubusercontent.com/tubearchivist/tubearchivist-jf-plugin/master/manifest.json
+https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/dkanadas_Repo/manifest.json
 ```
 
 
-- **[IntroSkipper's Repo](https://manifest.intro-skipper.org/manifest.json)** 2025-08-08T00:16:49.682Z
+- **[k-matti's Repo](https://raw.githubusercontent.com/k-matti/jellyfin-plugin-repository/master/manifest.json)** 2025-08-08T12:25:49.035Z
+  - **标签**: `third-party`, `community`
+  - **状态**: ✅ 成功
+  - **成功率**: 100%
+
+```
+https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/kmattis_Repo/manifest.json
+```
+
+
+- **[LinFor's Repo](https://raw.githubusercontent.com/LinFor/jellyfin-plugin-kinopoisk/master/dist/manifest.json)** 2025-08-08T12:25:49.035Z
+  - **标签**: `kinopoisk`, `metadata`, `russian`, `third-party`
+  - **状态**: ✅ 成功
+  - **成功率**: 100%
+
+```
+https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/LinFors_Repo/manifest.json
+```
+
+
+- **[LizardByte's Repo](https://app.lizardbyte.dev/jellyfin-plugin-repo/manifest.json)** 2025-08-08T12:25:49.036Z
+  - **标签**: `third-party`, `community`, `lizardbyte`
+  - **状态**: ✅ 成功
+  - **成功率**: 100%
+
+```
+https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/LizardBytes_Repo/manifest.json
+```
+
+
+- **[ShokoAnime's Repo](https://raw.githubusercontent.com/ShokoAnime/Shokofin/metadata/stable/manifest.json)** 2025-08-08T12:25:49.037Z
+  - **标签**: `anime`, `shoko`, `metadata`, `third-party`, `official-community`
+  - **状态**: ✅ 成功
+  - **成功率**: 100%
+
+```
+https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/ShokoAnimes_Repo/manifest.json
+```
+
+
+- **[TubeArchivist's Repo](https://raw.githubusercontent.com/tubearchivist/tubearchivist-jf-plugin/master/manifest.json)** 2025-08-08T12:25:49.038Z
+  - **标签**: `youtube`, `archival`, `tubearchivist`, `third-party`, `official-community`
+  - **状态**: ✅ 成功
+  - **成功率**: 100%
+
+```
+https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/TubeArchivists_Repo/manifest.json
+```
+
+
+- **[IntroSkipper's Repo](https://manifest.intro-skipper.org/manifest.json)** 2025-08-08T12:25:49.039Z
+  - **标签**: `intro-skipper`, `automation`, `third-party`, `official-community`
+  - **状态**: ❌ 失败
+  - **成功率**: 0%
 
 ```
 https://manifest.intro-skipper.org/manifest.json
 ```
 
 
-- **[Metashark' Repo](https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json)** 2025-08-08T00:16:49.682Z
+- **[Metashark' Repo](https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json)** 2025-08-08T12:25:49.040Z
+  - **标签**: `metadata`, `chinese`, `third-party`
+  - **状态**: ✅ 成功
+  - **成功率**: 100%
 
 ```
-https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json
+https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Metashark_Repo/manifest.json
 ```
 
 
