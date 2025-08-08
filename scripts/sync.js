@@ -384,8 +384,8 @@ function generateRepositoryItemContent(repositoryStatusData) {
   timestamp="${escapeString(repo.timestamp)}"
   status="${escapeString(repo.status)}"
   :successRate="${repo.successRate || 0}"
-  :tags="${JSON.stringify(repo.tags || []).replace(/"/g, "'")}"
-  :statusHistory="${JSON.stringify(repo.statusHistory || []).replace(/"/g, "'")}"
+  tags="${escapeString(JSON.stringify(repo.tags || []))}"
+  statusHistory="${escapeString(JSON.stringify(repo.statusHistory || []))}"
   lastError="${escapeString(repo.lastError || '')}"
 />`;
     }).join('\n');

@@ -13,9 +13,9 @@
       </div>
     </div>
     
-    <div class="repo-tags" v-if="tags && tags.length > 0">
+    <div class="repo-tags" v-if="parsedTags && parsedTags.length > 0">
       <span
-        v-for="tag in tags"
+        v-for="tag in parsedTags"
         :key="tag"
         class="tag"
         :class="{
@@ -46,11 +46,11 @@
       </div>
     </div>
 
-    <div class="status-history" v-if="statusHistory && statusHistory.length > 0">
+    <div class="status-history" v-if="parsedStatusHistory && parsedStatusHistory.length > 0">
       <h4>最近状态 (最多60次)</h4>
       <div class="history-chart">
         <div
-          v-for="(record, index) in statusHistory.slice(0, 60)"
+          v-for="(record, index) in parsedStatusHistory.slice(0, 60)"
           :key="index"
           class="history-dot"
           :class="`status-${record.status}`"
@@ -59,10 +59,10 @@
       </div>
       <div class="history-stats">
         <span class="success-rate">
-          成功率: {{ successRate || calculateSuccessRate(statusHistory) }}%
+          成功率: {{ successRate || calculateSuccessRate(parsedStatusHistory) }}%
         </span>
         <span class="total-checks">
-          总检查次数: {{ statusHistory.length }}
+          总检查次数: {{ parsedStatusHistory.length }}
         </span>
       </div>
     </div>
@@ -74,16 +74,37 @@
 </template>
 
 <script setup>
-defineProps({
+import { computed } from 'vue'
+
+const props = defineProps({
   name: String,
   originalUrl: String,
   repositoryUrl: String,
   timestamp: String,
   status: String,
   successRate: Number,
-  tags: Array,
-  statusHistory: Array,
+  tags: String,
+  statusHistory: String,
   lastError: String
+})
+
+// 解析 JSON 字符串为数组
+const parsedTags = computed(() => {
+  try {
+    return props.tags ? JSON.parse(props.tags) : []
+  } catch (e) {
+    console.warn('Failed to parse tags:', e)
+    return []
+  }
+})
+
+const parsedStatusHistory = computed(() => {
+  try {
+    return props.statusHistory ? JSON.parse(props.statusHistory) : []
+  } catch (e) {
+    console.warn('Failed to parse statusHistory:', e)
+    return []
+  }
 })
 
 const formatDate = (timestamp) => {
