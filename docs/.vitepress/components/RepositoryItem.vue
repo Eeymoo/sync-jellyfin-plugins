@@ -30,7 +30,7 @@
     </div>
 
     <div class="repo-info">
-      <p class="last-update">最后更新: {{ formatDate(timestamp) }}</p>
+      <p class="last-update">最后更新: {{ formatDate(timestamp) }} (北京时间)</p>
       <div class="repo-url">
         <input
           :value="repositoryUrl || originalUrl"
@@ -47,14 +47,14 @@
     </div>
 
     <div class="status-history" v-if="parsedStatusHistory && parsedStatusHistory.length > 0">
-      <h4>最近状态 (最多60次)</h4>
+      <h4>最近状态 (最多60次) - 时间为北京时间</h4>
       <div class="history-chart">
         <div
           v-for="(record, index) in parsedStatusHistory.slice(0, 60)"
           :key="index"
           class="history-dot"
           :class="`status-${record.status}`"
-          :title="`${formatDate(record.timestamp)}: ${record.status}${record.error ? ' - ' + record.error : ''}`"
+          :title="`${formatDate(record.timestamp)} (北京时间): ${record.status}${record.error ? ' - ' + record.error : ''}`"
         ></div>
       </div>
       <div class="history-stats">
@@ -108,7 +108,9 @@ const parsedStatusHistory = computed(() => {
 })
 
 const formatDate = (timestamp) => {
+  // 将时间转换为北京时间显示
   return new Date(timestamp).toLocaleString('zh-CN', {
+    timeZone: 'Asia/Shanghai',
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',

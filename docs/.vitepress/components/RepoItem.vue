@@ -25,7 +25,7 @@
     
     <div class="repo-stats">
       <span class="success-rate">成功率: {{ successRate }}%</span>
-      <span class="last-update">{{ formatDate(timestamp) }}</span>
+      <span class="last-update">{{ formatDate(timestamp) }} (北京时间)</span>
     </div>
   </div>
 </template>
@@ -41,7 +41,9 @@ defineProps({
 })
 
 const formatDate = (timestamp) => {
+  // 将时间转换为北京时间显示
   return new Date(timestamp).toLocaleString('zh-CN', {
+    timeZone: 'Asia/Shanghai',
     month: '2-digit',
     day: '2-digit',
     hour: '2-digit',

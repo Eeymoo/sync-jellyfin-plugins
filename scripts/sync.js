@@ -250,8 +250,19 @@ async function processManifest() {
     const oldContent = `###########
 Repo List
 ###########`;
-    const newContent = newManifest.map(item => `
-- **[${item.name}](${item.originalUrl})** ${item.timestamp}
+    const newContent = newManifest.map(item => {
+        // 将 UTC 时间转换为北京时间显示
+        const beijingTime = new Date(item.timestamp).toLocaleString('zh-CN', {
+            timeZone: 'Asia/Shanghai',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        return `
+- **[${item.name}](${item.originalUrl})** ${beijingTime} (北京时间)
   - **标签**: ${item.tags?.length ? item.tags.map(tag => `\`${tag}\``).join(', ') : '无'}
   - **状态**: ${item.status === 'success' ? '✅ 成功' : '❌ 失败'}
   - **成功率**: ${item.statusHistory?.length ? calculateSuccessRate(item.statusHistory) : 0}%
@@ -259,7 +270,8 @@ Repo List
 \`\`\`
 ${item.repositoryUrl || item.originalUrl}
 \`\`\`
-`).join('\n');
+`;
+    }).join('\n');
 
     replaceFileContentSync(templateFilePath, filePath, oldContent, newContent);
 
