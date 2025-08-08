@@ -68,7 +68,8 @@
     </div>
     
     <div v-if="lastError" class="last-error">
-      <strong>最近错误:</strong> {{ lastError }}
+      <strong>最近错误:</strong> 
+      <span class="error-message">{{ lastError }}</span>
     </div>
   </div>
 </template>
@@ -329,12 +330,20 @@ const calculateSuccessRate = (history) => {
 
 .last-error {
   margin-top: 8px;
-  padding: 8px;
+  padding: 12px;
   background: #fed7d7;
   border: 1px solid #fc8181;
-  border-radius: 4px;
-  font-size: 12px;
+  border-radius: 6px;
+  font-size: 13px;
   color: #c53030;
+  border-left: 4px solid #f56565;
+}
+
+.error-message {
+  font-family: 'Courier New', monospace;
+  font-weight: 500;
+  display: block;
+  margin-top: 4px;
 }
 
 /* 暗色主题支持 */
@@ -355,5 +364,15 @@ const calculateSuccessRate = (history) => {
   background: #4a5568;
   border-color: #718096;
   color: #e2e8f0;
+}
+
+.dark .last-error {
+  background: #2d1b1b;
+  border-color: #c53030;
+  color: #fed7d7;
+}
+
+.dark .error-message {
+  color: #fc8181;
 }
 </style>

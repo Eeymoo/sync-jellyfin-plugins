@@ -63,5 +63,10 @@
     "name": "Metashark' Repo",
     "repositoryUrl": "https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json",
     "tags": ["metadata", "chinese", "third-party"]
+  },
+  {
+    "name": "AudioMuse-AI's Repo",
+    "repositoryUrl": "https://raw.githubusercontent.com/neptunehub/audiomuse-ai-plugin/master/manifest.json",
+    "tags": ["audio", "ai", "music", "third-party"]
   }
 ]

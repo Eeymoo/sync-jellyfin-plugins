@@ -134,7 +134,7 @@ async function processManifestItem(item, existingItem = null) {
         name: item.name,
         originalUrl: item.repositoryUrl,
         repositoryUrl: '',
-        timestamp: getNewBeijingDate().toISOString(),
+        timestamp: new Date().toISOString(), // 直接使用 UTC 时间戳
         status: 'error',
         tags: item.tags || [],
         statusHistory: existingItem?.statusHistory || [],
@@ -184,7 +184,32 @@ async function processManifestItem(item, existingItem = null) {
 
     } catch (error) {
         console.error(`Error processing ${item.name}:`, error.message);
-        result.errorMessage = error.message;
+        
+        // 生成更友好的错误信息
+        let friendlyErrorMessage = '';
+        if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
+            friendlyErrorMessage = '网络连接失败，无法访问目标地址';
+        } else if (error.response?.status === 404) {
+            friendlyErrorMessage = '目标文件不存在 (404)';
+        } else if (error.response?.status === 403) {
+            friendlyErrorMessage = '访问被拒绝 (403)';
+        } else if (error.response?.status === 500) {
+            friendlyErrorMessage = '服务器内部错误 (500)';
+        } else if (error.response?.status >= 400 && error.response?.status < 500) {
+            friendlyErrorMessage = `客户端错误 (${error.response.status})`;
+        } else if (error.response?.status >= 500) {
+            friendlyErrorMessage = `服务器错误 (${error.response.status})`;
+        } else if (error.message.includes('timeout')) {
+            friendlyErrorMessage = '请求超时，网络连接不稳定';
+        } else if (error.message.includes('JSON')) {
+            friendlyErrorMessage = '响应数据格式错误，无法解析';
+        } else if (error.message.includes('certificate')) {
+            friendlyErrorMessage = 'SSL证书验证失败';
+        } else {
+            friendlyErrorMessage = `未知错误: ${error.message}`;
+        }
+        
+        result.errorMessage = friendlyErrorMessage;
     }
 
     // Update status history - keep last 60 records
@@ -245,36 +270,6 @@ async function processManifest() {
 
     mainProgressBar.stop();
 
-    const templateFilePath = './template/README.md';
-    const filePath = './README.md';
-    const oldContent = `###########
-Repo List
-###########`;
-    const newContent = newManifest.map(item => {
-        // 将 UTC 时间转换为北京时间显示
-        const beijingTime = new Date(item.timestamp).toLocaleString('zh-CN', {
-            timeZone: 'Asia/Shanghai',
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-        
-        return `
-- **[${item.name}](${item.originalUrl})** ${beijingTime} (北京时间)
-  - **标签**: ${item.tags?.length ? item.tags.map(tag => `\`${tag}\``).join(', ') : '无'}
-  - **状态**: ${item.status === 'success' ? '✅ 成功' : '❌ 失败'}
-  - **成功率**: ${item.statusHistory?.length ? calculateSuccessRate(item.statusHistory) : 0}%
-
-\`\`\`
-${item.repositoryUrl || item.originalUrl}
-\`\`\`
-`;
-    }).join('\n');
-
-    replaceFileContentSync(templateFilePath, filePath, oldContent, newContent);
-
     // 生成仓库状态数据供 Vue 组件使用
     const repositoryStatusData = newManifest.map(item => ({
         name: item.name,
@@ -303,6 +298,9 @@ ${item.repositoryUrl || item.originalUrl}
     // 为 docs/get-started.md 生成 Vue 组件内容（使用 RepoItem）
     const docsTemplateFilePath = './template/get-started.md';
     const docsFilePath = './docs/get-started.md';
+    const oldContent = `###########
+Repo List
+###########`;
     
     // 生成简单的 RepoItem 组件内容
     const repoItemContent = generateRepoItemContent(repositoryStatusData);
@@ -430,10 +428,8 @@ function calculateSuccessRate(history) {
  * @returns new Beijing Date
  */
 function getNewBeijingDate () {
-    const UTC = new Date().getTime();
-    const offsetMS = 8 * 60 * 60 * 1000;
-    const newBeijingDate = new Date(UTC + offsetMS);
-    return newBeijingDate
+    // 直接使用当前时间，后面在显示时转换为北京时间
+    return new Date();
 }
 
 processManifest();
