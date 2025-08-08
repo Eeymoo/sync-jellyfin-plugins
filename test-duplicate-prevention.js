@@ -12,13 +12,23 @@ function shouldTranslateText(text) {
         return false;
     }
     
-    // 检查是否已经包含翻译标记（更精确的检查）
-    const translationPattern = /\n\n原文:\s/;
+    // 检查是否已经包含翻译标记（<br> 格式）
+    const translationPattern = /<br><br>原文:\s/;
     if (translationPattern.test(text)) {
         return false;
     }
     
-    // 检查是否是已翻译的格式（以"原文:"结尾的情况）
+    // 检查是否是已翻译的格式（包含 <br><br>原文: ）
+    if (text.includes('<br><br>原文: ')) {
+        return false;
+    }
+    
+    // 兼容性检查：检查旧的 \n 格式（向下兼容）
+    const oldTranslationPattern = /\n\n原文:\s/;
+    if (oldTranslationPattern.test(text)) {
+        return false;
+    }
+    
     if (text.includes('\n\n原文: ')) {
         return false;
     }
@@ -56,9 +66,14 @@ async function testDuplicatePrevention() {
             description: '正常英文文本'
         },
         {
+            text: 'This is a translated text<br><br>原文: This is the original text',
+            expected: false,
+            description: '已翻译的文本（<br>格式）'
+        },
+        {
             text: 'This is a translated text\n\n原文: This is the original text',
             expected: false,
-            description: '已翻译的文本'
+            description: '已翻译的文本（\\n格式，向下兼容）'
         },
         {
             text: '',

@@ -90,8 +90,8 @@ async function translatePluginData() {
                             console.log(`  📝 Translating description to ${targetLang}...`);
                             const originalDescription = project.description;
                             const translated = await translator.translate(originalDescription, sourceLang, targetLang);
-                            // 直接替换 description 字段：翻译文本 + 原文
-                            project.description = `${translated}\n\n原文: ${originalDescription}`;
+                            // 直接替换 description 字段：翻译文本 + 原文（使用 <br> 换行）
+                            project.description = `${translated}<br><br>原文: ${originalDescription}`;
                             hasChanges = true;
                         }
                     }
@@ -104,8 +104,8 @@ async function translatePluginData() {
                                     console.log(`  📋 Translating changelog (v${version.version}) to ${targetLang}...`);
                                     const originalChangelog = version.changelog;
                                     const translated = await translator.translate(originalChangelog, sourceLang, targetLang);
-                                    // 直接替换 changelog 字段：翻译文本 + 原文
-                                    version.changelog = `${translated}\n\n原文: ${originalChangelog}`;
+                                    // 直接替换 changelog 字段：翻译文本 + 原文（使用 <br> 换行）
+                                    version.changelog = `${translated}<br><br>原文: ${originalChangelog}`;
                                     hasChanges = true;
                                 }
                             }
@@ -153,13 +153,23 @@ function shouldTranslateText(text) {
         return false;
     }
     
-    // 检查是否已经包含翻译标记（更精确的检查）
-    const translationPattern = /\n\n原文:\s/;
+    // 检查是否已经包含翻译标记（<br> 格式）
+    const translationPattern = /<br><br>原文:\s/;
     if (translationPattern.test(text)) {
         return false;
     }
     
-    // 检查是否是已翻译的格式（以"原文:"结尾的情况）
+    // 检查是否是已翻译的格式（包含 <br><br>原文: ）
+    if (text.includes('<br><br>原文: ')) {
+        return false;
+    }
+    
+    // 兼容性检查：检查旧的 \n 格式（向下兼容）
+    const oldTranslationPattern = /\n\n原文:\s/;
+    if (oldTranslationPattern.test(text)) {
+        return false;
+    }
+    
     if (text.includes('\n\n原文: ')) {
         return false;
     }
