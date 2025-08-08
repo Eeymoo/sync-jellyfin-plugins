@@ -58,27 +58,27 @@ git clone https://github.com/Eeymoo/sync-jellyfin-plugins.git
 本仓库支持多种插件 Repo 的同步，以下是一些推荐的插件仓库及其 URL。你可以将以下 URL 添加到 Jellyfin 的插件仓库设置中，以使用这些 Repo 的插件：
 
 
-- **[Jellyfin](https://repo.jellyfin.org/files/plugin/manifest.json)** 2025-08-08T12:25:49.010Z
+- **[Jellyfin](https://repo.jellyfin.org/files/plugin/manifest.json)** 2025/08/08 21:56 (北京时间)
   - **标签**: `official`, `stable`
-  - **状态**: ✅ 成功
-  - **成功率**: 100%
+  - **状态**: ❌ 失败
+  - **成功率**: 50%
 
 ```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Jellyfin/manifest.json
+https://repo.jellyfin.org/files/plugin/manifest.json
 ```
 
 
-- **[Jellyfin Unstable](https://repo.jellyfin.org/files/plugin-unstable/manifest.json)** 2025-08-08T12:25:49.030Z
+- **[Jellyfin Unstable](https://repo.jellyfin.org/files/plugin-unstable/manifest.json)** 2025/08/08 21:56 (北京时间)
   - **标签**: `official`, `unstable`, `beta`
-  - **状态**: ✅ 成功
-  - **成功率**: 100%
+  - **状态**: ❌ 失败
+  - **成功率**: 50%
 
 ```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Jellyfin_Unstable/manifest.json
+https://repo.jellyfin.org/files/plugin-unstable/manifest.json
 ```
 
 
-- **[9p4's Single-Sign-On (SSO) Repo](https://raw.githubusercontent.com/9p4/jellyfin-plugin-sso/manifest-release/manifest.json)** 2025-08-08T12:25:49.031Z
+- **[9p4's Single-Sign-On (SSO) Repo](https://raw.githubusercontent.com/9p4/jellyfin-plugin-sso/manifest-release/manifest.json)** 2025/08/08 21:56 (北京时间)
   - **标签**: `authentication`, `sso`, `third-party`
   - **状态**: ✅ 成功
   - **成功率**: 100%
@@ -88,7 +88,7 @@ https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/9p4s_SingleSignOn_S
 ```
 
 
-- **[Ani-Sync Repo](https://raw.githubusercontent.com/vosmiic/jellyfin-ani-sync/master/manifest.json)** 2025-08-08T12:25:49.032Z
+- **[Ani-Sync Repo](https://raw.githubusercontent.com/vosmiic/jellyfin-ani-sync/master/manifest.json)** 2025/08/08 21:56 (北京时间)
   - **标签**: `anime`, `sync`, `metadata`, `third-party`, `official-community`
   - **状态**: ✅ 成功
   - **成功率**: 100%
@@ -98,7 +98,7 @@ https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/AniSync_Repo/manife
 ```
 
 
-- **[danieladov's Repo](https://raw.githubusercontent.com/danieladov/JellyfinPluginManifest/master/manifest.json)** 2025-08-08T12:25:49.033Z
+- **[danieladov's Repo](https://raw.githubusercontent.com/danieladov/JellyfinPluginManifest/master/manifest.json)** 2025/08/08 21:56 (北京时间)
   - **标签**: `third-party`, `community`
   - **状态**: ✅ 成功
   - **成功率**: 100%
@@ -108,7 +108,7 @@ https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/danieladovs_Repo/ma
 ```
 
 
-- **[dkanada's Repo](https://raw.githubusercontent.com/dkanada/jellyfin-plugin-intros/master/manifest.json)** 2025-08-08T12:25:49.034Z
+- **[dkanada's Repo](https://raw.githubusercontent.com/dkanada/jellyfin-plugin-intros/master/manifest.json)** 2025/08/08 21:56 (北京时间)
   - **标签**: `intros`, `video`, `third-party`, `official-community`
   - **状态**: ✅ 成功
   - **成功率**: 100%
@@ -118,7 +118,7 @@ https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/dkanadas_Repo/manif
 ```
 
 
-- **[k-matti's Repo](https://raw.githubusercontent.com/k-matti/jellyfin-plugin-repository/master/manifest.json)** 2025-08-08T12:25:49.035Z
+- **[k-matti's Repo](https://raw.githubusercontent.com/k-matti/jellyfin-plugin-repository/master/manifest.json)** 2025/08/08 21:56 (北京时间)
   - **标签**: `third-party`, `community`
   - **状态**: ✅ 成功
   - **成功率**: 100%
@@ -128,7 +128,7 @@ https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/kmattis_Repo/manife
 ```
 
 
-- **[LinFor's Repo](https://raw.githubusercontent.com/LinFor/jellyfin-plugin-kinopoisk/master/dist/manifest.json)** 2025-08-08T12:25:49.035Z
+- **[LinFor's Repo](https://raw.githubusercontent.com/LinFor/jellyfin-plugin-kinopoisk/master/dist/manifest.json)** 2025/08/08 21:56 (北京时间)
   - **标签**: `kinopoisk`, `metadata`, `russian`, `third-party`
   - **状态**: ✅ 成功
   - **成功率**: 100%
@@ -138,7 +138,7 @@ https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/LinFors_Repo/manife
 ```
 
 
-- **[LizardByte's Repo](https://app.lizardbyte.dev/jellyfin-plugin-repo/manifest.json)** 2025-08-08T12:25:49.036Z
+- **[LizardByte's Repo](https://app.lizardbyte.dev/jellyfin-plugin-repo/manifest.json)** 2025/08/08 21:56 (北京时间)
   - **标签**: `third-party`, `community`, `lizardbyte`
   - **状态**: ✅ 成功
   - **成功率**: 100%
@@ -148,7 +148,7 @@ https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/LizardBytes_Repo/ma
 ```
 
 
-- **[ShokoAnime's Repo](https://raw.githubusercontent.com/ShokoAnime/Shokofin/metadata/stable/manifest.json)** 2025-08-08T12:25:49.037Z
+- **[ShokoAnime's Repo](https://raw.githubusercontent.com/ShokoAnime/Shokofin/metadata/stable/manifest.json)** 2025/08/08 21:56 (北京时间)
   - **标签**: `anime`, `shoko`, `metadata`, `third-party`, `official-community`
   - **状态**: ✅ 成功
   - **成功率**: 100%
@@ -158,7 +158,7 @@ https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/ShokoAnimes_Repo/ma
 ```
 
 
-- **[TubeArchivist's Repo](https://raw.githubusercontent.com/tubearchivist/tubearchivist-jf-plugin/master/manifest.json)** 2025-08-08T12:25:49.038Z
+- **[TubeArchivist's Repo](https://raw.githubusercontent.com/tubearchivist/tubearchivist-jf-plugin/master/manifest.json)** 2025/08/08 21:56 (北京时间)
   - **标签**: `youtube`, `archival`, `tubearchivist`, `third-party`, `official-community`
   - **状态**: ✅ 成功
   - **成功率**: 100%
@@ -168,7 +168,7 @@ https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/TubeArchivists_Repo
 ```
 
 
-- **[IntroSkipper's Repo](https://manifest.intro-skipper.org/manifest.json)** 2025-08-08T12:25:49.039Z
+- **[IntroSkipper's Repo](https://manifest.intro-skipper.org/manifest.json)** 2025/08/08 21:56 (北京时间)
   - **标签**: `intro-skipper`, `automation`, `third-party`, `official-community`
   - **状态**: ❌ 失败
   - **成功率**: 0%
@@ -178,7 +178,7 @@ https://manifest.intro-skipper.org/manifest.json
 ```
 
 
-- **[Metashark' Repo](https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json)** 2025-08-08T12:25:49.040Z
+- **[Metashark' Repo](https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json)** 2025/08/08 21:56 (北京时间)
   - **标签**: `metadata`, `chinese`, `third-party`
   - **状态**: ✅ 成功
   - **成功率**: 100%
