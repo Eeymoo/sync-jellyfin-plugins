@@ -81,10 +81,19 @@ class BaiduTranslator {
             return text;
         }
 
-        // 检查缓存
-        const cacheKey = `${text}|${from}|${to}`;
+        // 检查缓存 - 使用内容哈希作为缓存键，更可靠
+        const textHash = crypto.MD5(text.trim()).toString();
+        const cacheKey = `${textHash}|${from}|${to}`;
+        
         if (this.translationCache.has(cacheKey)) {
+            console.log(`  📋 Using cached translation for text hash: ${textHash.substring(0, 8)}...`);
             return this.translationCache.get(cacheKey);
+        }
+
+        // 检查文本是否过长（百度翻译API限制）
+        if (text.length > 6000) {
+            console.warn(`  ⚠️ Text too long (${text.length} chars), truncating to 6000 chars`);
+            text = text.substring(0, 6000);
         }
 
         try {
@@ -100,6 +109,8 @@ class BaiduTranslator {
                 sign: sign
             });
 
+            console.log(`  🌐 Translating text (${text.length} chars): ${text.substring(0, 50)}...`);
+            
             const response = await axios.get(`${this.apiUrl}?${params}`, {
                 timeout: 10000
             });
@@ -110,15 +121,16 @@ class BaiduTranslator {
 
             const translatedText = response.data.trans_result[0].dst;
             
-            // 缓存翻译结果
+            // 缓存翻译结果 - 使用哈希键
             this.translationCache.set(cacheKey, translatedText);
+            console.log(`  ✅ Translation cached with key: ${textHash.substring(0, 8)}...`);
             
             // 添加延迟避免API频率限制
             await new Promise(resolve => setTimeout(resolve, 200));
             
             return translatedText;
         } catch (error) {
-            console.error(`Translation failed for "${text}":`, error.message);
+            console.error(`  ❌ Translation failed for "${text.substring(0, 50)}...":`, error.message);
             return text; // 翻译失败时返回原文
         }
     }

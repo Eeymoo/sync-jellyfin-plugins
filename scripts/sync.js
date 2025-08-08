@@ -463,39 +463,39 @@ async function translateProjectData(projects) {
         for (const project of projects) {
             console.log(`Translating project: ${project.name || 'Unknown'}`);
             
-            // 翻译 description
+            // 翻译 description - 直接替换原字段内容
             if (project.description) {
-                const fieldName = `description_${targetLang}`;
-                
-                // 检查是否已经翻译过
-                if (!project[fieldName] || !project[fieldName].includes('原文:')) {
+                if (shouldTranslateText(project.description)) {
                     try {
-                        const translated = await translator.translate(project.description, sourceLang, targetLang);
-                        // 格式：翻译文本 + 原文
-                        project[fieldName] = `${translated}\n\n原文: ${project.description}`;
+                        const originalDescription = project.description;
+                        const translated = await translator.translate(originalDescription, sourceLang, targetLang);
+                        // 直接替换 description 字段：翻译文本 + 原文
+                        project.description = `${translated}\n\n原文: ${originalDescription}`;
                         console.log(`  ✓ Translated description to ${targetLang}`);
                     } catch (error) {
                         console.warn(`  ✗ Failed to translate description:`, error.message);
                     }
+                } else {
+                    console.log(`  ⏭️ Skipping description (already translated or empty)`);
                 }
             }
             
-            // 翻译版本信息中的 changelog
+            // 翻译版本信息中的 changelog - 直接替换原字段内容
             if (project.versions) {
                 for (const version of project.versions) {
                     if (version.changelog) {
-                        const fieldName = `changelog_${targetLang}`;
-                        
-                        // 检查是否已经翻译过
-                        if (!version[fieldName] || !version[fieldName].includes('原文:')) {
+                        if (shouldTranslateText(version.changelog)) {
                             try {
-                                const translated = await translator.translate(version.changelog, sourceLang, targetLang);
-                                // 格式：翻译文本 + 原文
-                                version[fieldName] = `${translated}\n\n原文: ${version.changelog}`;
+                                const originalChangelog = version.changelog;
+                                const translated = await translator.translate(originalChangelog, sourceLang, targetLang);
+                                // 直接替换 changelog 字段：翻译文本 + 原文
+                                version.changelog = `${translated}\n\n原文: ${originalChangelog}`;
                                 console.log(`  ✓ Translated changelog (v${version.version}) to ${targetLang}`);
                             } catch (error) {
                                 console.warn(`  ✗ Failed to translate changelog:`, error.message);
                             }
+                        } else {
+                            console.log(`  ⏭️ Skipping changelog (v${version.version}) (already translated or empty)`);
                         }
                     }
                 }
@@ -509,6 +509,41 @@ async function translateProjectData(projects) {
     } catch (error) {
         console.error('Project data translation failed:', error.message);
     }
+}
+
+/**
+ * 判断文本是否需要翻译
+ * @param {string} text - 要检查的文本
+ * @returns {boolean} - 是否需要翻译
+ */
+function shouldTranslateText(text) {
+    if (!text || typeof text !== 'string' || text.trim() === '') {
+        return false;
+    }
+    
+    // 检查是否已经包含翻译标记（更精确的检查）
+    const translationPattern = /\n\n原文:\s/;
+    if (translationPattern.test(text)) {
+        return false;
+    }
+    
+    // 检查是否是已翻译的格式（以"原文:"结尾的情况）
+    if (text.includes('\n\n原文: ')) {
+        return false;
+    }
+    
+    // 检查文本长度，太短的文本可能不需要翻译
+    if (text.trim().length < 3) {
+        return false;
+    }
+    
+    // 检查是否只包含数字、符号等不需要翻译的内容
+    const nonTranslatablePattern = /^[\d\s\.\-_,;:!()\[\]{}\/\\@#$%^&*+=<>?|`~"']*$/;
+    if (nonTranslatablePattern.test(text.trim())) {
+        return false;
+    }
+    
+    return true;
 }
 
 /**
