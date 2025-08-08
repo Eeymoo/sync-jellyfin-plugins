@@ -3,7 +3,7 @@
     "name": "Jellyfin",
     "originalUrl": "https://repo.jellyfin.org/files/plugin/manifest.json",
     "repositoryUrl": "https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Jellyfin/manifest.json",
-    "timestamp": "2025-08-08T07:24:27.292Z",
+    "timestamp": "2025-08-08T07:35:55.528Z",
     "status": "success",
     "tags": [
       "official",
@@ -11,7 +11,7 @@
     ],
     "statusHistory": [
       {
-        "timestamp": "2025-08-08T07:24:27.292Z",
+        "timestamp": "2025-08-08T07:35:55.528Z",
         "status": "success",
         "error": null
       },
@@ -37,9 +37,9 @@
   {
     "name": "Jellyfin Unstable",
     "originalUrl": "https://repo.jellyfin.org/files/plugin-unstable/manifest.json",
-    "repositoryUrl": "https://repo.jellyfin.org/files/plugin-unstable/manifest.json",
-    "timestamp": "2025-08-08T07:24:27.312Z",
-    "status": "error",
+    "repositoryUrl": "https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Jellyfin_Unstable/manifest.json",
+    "timestamp": "2025-08-08T07:35:55.549Z",
+    "status": "success",
     "tags": [
       "official",
       "unstable",
@@ -47,9 +47,9 @@
     ],
     "statusHistory": [
       {
-        "timestamp": "2025-08-08T07:24:27.312Z",
-        "status": "error",
-        "error": "请求超时，网络连接不稳定"
+        "timestamp": "2025-08-08T07:35:55.549Z",
+        "status": "success",
+        "error": null
       },
       {
         "timestamp": "2025-08-08T06:39:58.129Z",
@@ -67,14 +67,14 @@
         "error": null
       }
     ],
-    "successRate": 50,
-    "lastError": "请求超时，网络连接不稳定"
+    "successRate": 75,
+    "lastError": null
   },
   {
     "name": "Ani-Sync Repo",
     "originalUrl": "https://raw.githubusercontent.com/vosmiic/jellyfin-ani-sync/master/manifest.json",
     "repositoryUrl": "https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/AniSync_Repo/manifest.json",
-    "timestamp": "2025-08-08T07:24:27.314Z",
+    "timestamp": "2025-08-08T07:35:55.552Z",
     "status": "success",
     "tags": [
       "anime",
@@ -85,7 +85,7 @@
     ],
     "statusHistory": [
       {
-        "timestamp": "2025-08-08T07:24:27.314Z",
+        "timestamp": "2025-08-08T07:35:55.552Z",
         "status": "success",
         "error": null
       },
@@ -112,7 +112,7 @@
     "name": "dkanada's Repo",
     "originalUrl": "https://raw.githubusercontent.com/dkanada/jellyfin-plugin-intros/master/manifest.json",
     "repositoryUrl": "https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/dkanadas_Repo/manifest.json",
-    "timestamp": "2025-08-08T07:24:27.316Z",
+    "timestamp": "2025-08-08T07:35:55.554Z",
     "status": "success",
     "tags": [
       "intros",
@@ -122,7 +122,7 @@
     ],
     "statusHistory": [
       {
-        "timestamp": "2025-08-08T07:24:27.316Z",
+        "timestamp": "2025-08-08T07:35:55.554Z",
         "status": "success",
         "error": null
       },
@@ -149,7 +149,7 @@
     "name": "ShokoAnime's Repo",
     "originalUrl": "https://raw.githubusercontent.com/ShokoAnime/Shokofin/metadata/stable/manifest.json",
     "repositoryUrl": "https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/ShokoAnimes_Repo/manifest.json",
-    "timestamp": "2025-08-08T07:24:27.319Z",
+    "timestamp": "2025-08-08T07:35:55.557Z",
     "status": "success",
     "tags": [
       "anime",
@@ -160,7 +160,7 @@
     ],
     "statusHistory": [
       {
-        "timestamp": "2025-08-08T07:24:27.319Z",
+        "timestamp": "2025-08-08T07:35:55.557Z",
         "status": "success",
         "error": null
       },
@@ -187,7 +187,7 @@
     "name": "TubeArchivist's Repo",
     "originalUrl": "https://raw.githubusercontent.com/tubearchivist/tubearchivist-jf-plugin/master/manifest.json",
     "repositoryUrl": "https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/TubeArchivists_Repo/manifest.json",
-    "timestamp": "2025-08-08T07:24:27.321Z",
+    "timestamp": "2025-08-08T07:35:55.558Z",
     "status": "success",
     "tags": [
       "youtube",
@@ -198,7 +198,7 @@
     ],
     "statusHistory": [
       {
-        "timestamp": "2025-08-08T07:24:27.321Z",
+        "timestamp": "2025-08-08T07:35:55.558Z",
         "status": "success",
         "error": null
       },
@@ -225,7 +225,7 @@
     "name": "IntroSkipper's Repo",
     "originalUrl": "https://manifest.intro-skipper.org/manifest.json",
     "repositoryUrl": "https://manifest.intro-skipper.org/manifest.json",
-    "timestamp": "2025-08-08T07:24:27.321Z",
+    "timestamp": "2025-08-08T07:35:55.559Z",
     "status": "error",
     "tags": [
       "intro-skipper",
@@ -235,7 +235,7 @@
     ],
     "statusHistory": [
       {
-        "timestamp": "2025-08-08T07:24:27.321Z",
+        "timestamp": "2025-08-08T07:35:55.559Z",
         "status": "error",
         "error": "未知错误: Cannot read properties of undefined (reading 'sort')"
       },
@@ -262,7 +262,7 @@
     "name": "9p4's Single-Sign-On (SSO) Repo",
     "originalUrl": "https://raw.githubusercontent.com/9p4/jellyfin-plugin-sso/manifest-release/manifest.json",
     "repositoryUrl": "https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/9p4s_SingleSignOn_SSO_Repo/manifest.json",
-    "timestamp": "2025-08-08T07:24:27.313Z",
+    "timestamp": "2025-08-08T07:35:55.551Z",
     "status": "success",
     "tags": [
       "authentication",
@@ -271,7 +271,7 @@
     ],
     "statusHistory": [
       {
-        "timestamp": "2025-08-08T07:24:27.313Z",
+        "timestamp": "2025-08-08T07:35:55.551Z",
         "status": "success",
         "error": null
       },
@@ -298,7 +298,7 @@
     "name": "danieladov's Repo",
     "originalUrl": "https://raw.githubusercontent.com/danieladov/JellyfinPluginManifest/master/manifest.json",
     "repositoryUrl": "https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/danieladovs_Repo/manifest.json",
-    "timestamp": "2025-08-08T07:24:27.315Z",
+    "timestamp": "2025-08-08T07:35:55.553Z",
     "status": "success",
     "tags": [
       "third-party",
@@ -306,7 +306,7 @@
     ],
     "statusHistory": [
       {
-        "timestamp": "2025-08-08T07:24:27.315Z",
+        "timestamp": "2025-08-08T07:35:55.553Z",
         "status": "success",
         "error": null
       },
@@ -333,7 +333,7 @@
     "name": "k-matti's Repo",
     "originalUrl": "https://raw.githubusercontent.com/k-matti/jellyfin-plugin-repository/master/manifest.json",
     "repositoryUrl": "https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/kmattis_Repo/manifest.json",
-    "timestamp": "2025-08-08T07:24:27.317Z",
+    "timestamp": "2025-08-08T07:35:55.554Z",
     "status": "success",
     "tags": [
       "third-party",
@@ -341,7 +341,7 @@
     ],
     "statusHistory": [
       {
-        "timestamp": "2025-08-08T07:24:27.317Z",
+        "timestamp": "2025-08-08T07:35:55.554Z",
         "status": "success",
         "error": null
       },
@@ -368,7 +368,7 @@
     "name": "LinFor's Repo",
     "originalUrl": "https://raw.githubusercontent.com/LinFor/jellyfin-plugin-kinopoisk/master/dist/manifest.json",
     "repositoryUrl": "https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/LinFors_Repo/manifest.json",
-    "timestamp": "2025-08-08T07:24:27.317Z",
+    "timestamp": "2025-08-08T07:35:55.555Z",
     "status": "success",
     "tags": [
       "kinopoisk",
@@ -378,7 +378,7 @@
     ],
     "statusHistory": [
       {
-        "timestamp": "2025-08-08T07:24:27.317Z",
+        "timestamp": "2025-08-08T07:35:55.555Z",
         "status": "success",
         "error": null
       },
@@ -405,7 +405,7 @@
     "name": "LizardByte's Repo",
     "originalUrl": "https://app.lizardbyte.dev/jellyfin-plugin-repo/manifest.json",
     "repositoryUrl": "https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/LizardBytes_Repo/manifest.json",
-    "timestamp": "2025-08-08T07:24:27.318Z",
+    "timestamp": "2025-08-08T07:35:55.556Z",
     "status": "success",
     "tags": [
       "third-party",
@@ -414,7 +414,7 @@
     ],
     "statusHistory": [
       {
-        "timestamp": "2025-08-08T07:24:27.318Z",
+        "timestamp": "2025-08-08T07:35:55.556Z",
         "status": "success",
         "error": null
       },
@@ -441,7 +441,7 @@
     "name": "Metashark' Repo",
     "originalUrl": "https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json",
     "repositoryUrl": "https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Metashark_Repo/manifest.json",
-    "timestamp": "2025-08-08T07:24:27.322Z",
+    "timestamp": "2025-08-08T07:35:55.560Z",
     "status": "success",
     "tags": [
       "metadata",
@@ -450,7 +450,7 @@
     ],
     "statusHistory": [
       {
-        "timestamp": "2025-08-08T07:24:27.322Z",
+        "timestamp": "2025-08-08T07:35:55.560Z",
         "status": "success",
         "error": null
       },
@@ -477,7 +477,7 @@
     "name": "AudioMuse-AI's Repo",
     "originalUrl": "https://raw.githubusercontent.com/neptunehub/audiomuse-ai-plugin/master/manifest.json",
     "repositoryUrl": "https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/AudioMuseAIs_Repo/manifest.json",
-    "timestamp": "2025-08-08T07:24:27.322Z",
+    "timestamp": "2025-08-08T07:35:55.560Z",
     "status": "success",
     "tags": [
       "audio",
@@ -487,7 +487,7 @@
     ],
     "statusHistory": [
       {
-        "timestamp": "2025-08-08T07:24:27.322Z",
+        "timestamp": "2025-08-08T07:35:55.560Z",
         "status": "success",
         "error": null
       },
