@@ -5,6 +5,9 @@
   "main": "scripts/sync.js",
   "scripts": {
     "sync": "node ./scripts/sync.js",
+    "translate": "node translate.js",
+    "translate-plugin-data": "node translate-plugin-data.js",
+    "test-translation": "node test-translation.js",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
@@ -17,6 +20,7 @@
     "ali-oss": "^6.22.0",
     "axios": "^1.8.1",
     "cli-progress": "^3.12.0",
+    "crypto-js": "^4.2.0",
     "dotenv": "^16.4.7"
   },
   "devDependencies": {

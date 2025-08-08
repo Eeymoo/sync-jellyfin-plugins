@@ -38,3 +38,9 @@ download/
 docs/.vitepress/dist/
 docs/.vitepress/cache/
 docs/.vitepress/temp/
+
+# 翻译相关文件
+translation-cache.json
+docs/translations/
+test-output/
+test-template.md

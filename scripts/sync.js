@@ -4,6 +4,7 @@ const path = require('path');
 const axios = require('axios');
 const OSS = require('ali-oss');
 const cliProgress = require('cli-progress');
+const { MultiLanguageManager } = require('./translator');
 
 const { OSS_ACCESS_KEY_ID, OSS_ACCESS_KEY_SECRET, OSS_ENDPOINT, OSS_BUCKET_NAME } = process.env;
 
@@ -173,6 +174,9 @@ async function processManifestItem(item, existingItem = null) {
                 versions: resultVersions
             })
         }
+
+        // 翻译插件数据
+        await translateProjectData(resultProjects);
 
 
         const localFilePath = path.join(downloadDir, itemName, 'manifest.json');
@@ -430,6 +434,101 @@ function calculateSuccessRate(history) {
 function getNewBeijingDate () {
     // 直接使用当前时间，后面在显示时转换为北京时间
     return new Date();
+}
+
+/**
+ * 翻译项目数据中的指定字段
+ * @param {Array} projects - 项目数据数组
+ * @returns {Promise<void>}
+ */
+async function translateProjectData(projects) {
+    // 检查是否配置了百度翻译API
+    const { BAIDU_TRANSLATE_APPID, BAIDU_TRANSLATE_SECRET, TRANSLATION_TARGET_LANGUAGE, TRANSLATION_SOURCE_LANGUAGE } = process.env;
+    if (!BAIDU_TRANSLATE_APPID || !BAIDU_TRANSLATE_SECRET) {
+        console.log('Baidu Translation API not configured, skipping plugin data translation.');
+        return;
+    }
+
+    try {
+        const { BaiduTranslator } = require('./translator');
+        const translator = new BaiduTranslator(BAIDU_TRANSLATE_APPID, BAIDU_TRANSLATE_SECRET);
+        
+        // 从环境变量读取翻译配置，默认为 auto -> zh (自动检测 -> 中文)
+        const targetLang = TRANSLATION_TARGET_LANGUAGE || 'zh';
+        const sourceLang = TRANSLATION_SOURCE_LANGUAGE || 'auto';
+        
+        console.log(`Translation config: ${sourceLang} -> ${targetLang}`);
+        
+        // 翻译每个项目的字段
+        for (const project of projects) {
+            console.log(`Translating project: ${project.name || 'Unknown'}`);
+            
+            // 翻译 description
+            if (project.description) {
+                const fieldName = `description_${targetLang}`;
+                
+                // 检查是否已经翻译过
+                if (!project[fieldName] || !project[fieldName].includes('原文:')) {
+                    try {
+                        const translated = await translator.translate(project.description, sourceLang, targetLang);
+                        // 格式：翻译文本 + 原文
+                        project[fieldName] = `${translated}\n\n原文: ${project.description}`;
+                        console.log(`  ✓ Translated description to ${targetLang}`);
+                    } catch (error) {
+                        console.warn(`  ✗ Failed to translate description:`, error.message);
+                    }
+                }
+            }
+            
+            // 翻译版本信息中的 changelog
+            if (project.versions) {
+                for (const version of project.versions) {
+                    if (version.changelog) {
+                        const fieldName = `changelog_${targetLang}`;
+                        
+                        // 检查是否已经翻译过
+                        if (!version[fieldName] || !version[fieldName].includes('原文:')) {
+                            try {
+                                const translated = await translator.translate(version.changelog, sourceLang, targetLang);
+                                // 格式：翻译文本 + 原文
+                                version[fieldName] = `${translated}\n\n原文: ${version.changelog}`;
+                                console.log(`  ✓ Translated changelog (v${version.version}) to ${targetLang}`);
+                            } catch (error) {
+                                console.warn(`  ✗ Failed to translate changelog:`, error.message);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        // 保存翻译缓存
+        translator.saveCache();
+        console.log('Project data translation completed.');
+        
+    } catch (error) {
+        console.error('Project data translation failed:', error.message);
+    }
+}
+
+/**
+ * 获取百度翻译API对应的语言代码
+ * @param {string} lang - 语言简码
+ * @returns {string} - 百度API语言代码
+ */
+function getLangCode(lang) {
+    const langMap = {
+        'en': 'en',
+        'ja': 'jp',
+        'ko': 'kor',
+        'fr': 'fra',
+        'de': 'de',
+        'es': 'spa',
+        'ru': 'ru',
+        'pt': 'pt',
+        'it': 'it'
+    };
+    return langMap[lang] || 'en';
 }
 
 processManifest();
