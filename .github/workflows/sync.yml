@@ -35,6 +35,16 @@ jobs:
     - name: Run sync script
       run: pnpm run sync
 
+    - name: 查看生成的文件内容
+      run: |
+        echo "==== docs/status.md ===="
+        cat docs/status.md
+
+    - name: 查看生成的文件内容
+      run: |
+        echo "==== docs/get-started.md ===="
+        cat docs/get-started.md
+
     # 生成文档
     - name: Build Docs
       run: pnpm run docs:build
