@@ -74,8 +74,14 @@ async function translatePluginData() {
                 }
                 
                 const projects = JSON.parse(fs.readFileSync(localManifestPath, 'utf8'));
-                let hasChanges = false;
                 
+                // 保存原始版本
+                const originalProjects = JSON.parse(JSON.stringify(projects));
+                const originalManifestPath = path.join(downloadDir, itemName, 'manifest-original.json');
+                fs.writeFileSync(originalManifestPath, JSON.stringify(originalProjects, null, 2));
+                
+                let hasChanges = false;
+
                 // 翻译每个项目的字段
                 for (const project of projects) {
                     // 翻译 description - 直接替换原字段内容
@@ -107,15 +113,15 @@ async function translatePluginData() {
                     }
                 }
                 
-                // 保存更新后的数据
+                // 保存更新后的数据（翻译版本）
                 if (hasChanges) {
                     fs.writeFileSync(localManifestPath, JSON.stringify(projects, null, 2));
                     console.log(`✅ Updated translations for ${item.name}`);
+                    console.log(`📄 Original version saved as: manifest-original.json`);
+                    console.log(`📄 Translated version saved as: manifest.json`);
                 } else {
                     console.log(`✨ No new translations needed for ${item.name}`);
-                }
-                
-            } catch (error) {
+                }            } catch (error) {
                 console.error(`❌ Failed to process ${item.name}:`, error.message);
             }
         }

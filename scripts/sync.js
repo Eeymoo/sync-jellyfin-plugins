@@ -175,15 +175,26 @@ async function processManifestItem(item, existingItem = null) {
             })
         }
 
+        // 保存原始版本（未翻译）
+        const originalProjects = JSON.parse(JSON.stringify(resultProjects));
+        
         // 翻译插件数据
-        await translateProjectData(resultProjects);
+        const translatedProjects = await translateProjectData(resultProjects);
 
-
-        const localFilePath = path.join(downloadDir, itemName, 'manifest.json');
-        const ossKey = `plugins/${itemName}/manifest.json`;
-        fs.writeFileSync(localFilePath, JSON.stringify(resultProjects, null, 2));
-        await uploadFileToOSS(localFilePath, ossKey);
-        result.repositoryUrl = `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/${ossKey}`;
+        // 上传原始版本
+        const originalFilePath = path.join(downloadDir, itemName, 'manifest-original.json');
+        const originalOssKey = `plugins/${itemName}/manifest-original.json`;
+        fs.writeFileSync(originalFilePath, JSON.stringify(originalProjects, null, 2));
+        await uploadFileToOSS(originalFilePath, originalOssKey);
+        
+        // 上传翻译版本
+        const translatedFilePath = path.join(downloadDir, itemName, 'manifest.json');
+        const translatedOssKey = `plugins/${itemName}/manifest.json`;
+        fs.writeFileSync(translatedFilePath, JSON.stringify(translatedProjects, null, 2));
+        await uploadFileToOSS(translatedFilePath, translatedOssKey);
+        
+        result.repositoryUrl = `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/${translatedOssKey}`;
+        result.originalRepositoryUrl = `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/${originalOssKey}`;
         result.status = 'success';
 
     } catch (error) {
@@ -439,14 +450,14 @@ function getNewBeijingDate () {
 /**
  * 翻译项目数据中的指定字段
  * @param {Array} projects - 项目数据数组
- * @returns {Promise<void>}
+ * @returns {Promise<Array>} - 翻译后的项目数据数组
  */
 async function translateProjectData(projects) {
     // 检查是否配置了百度翻译API
     const { BAIDU_TRANSLATE_APPID, BAIDU_TRANSLATE_SECRET, TRANSLATION_TARGET_LANGUAGE, TRANSLATION_SOURCE_LANGUAGE } = process.env;
     if (!BAIDU_TRANSLATE_APPID || !BAIDU_TRANSLATE_SECRET) {
         console.log('Baidu Translation API not configured, skipping plugin data translation.');
-        return;
+        return projects;
     }
 
     try {
@@ -459,8 +470,11 @@ async function translateProjectData(projects) {
         
         console.log(`Translation config: ${sourceLang} -> ${targetLang}`);
         
+        // 创建项目数据的深拷贝用于翻译
+        const translatedProjects = JSON.parse(JSON.stringify(projects));
+        
         // 翻译每个项目的字段
-        for (const project of projects) {
+        for (const project of translatedProjects) {
             console.log(`Translating project: ${project.name || 'Unknown'}`);
             
             // 翻译 description - 直接替换原字段内容
@@ -506,8 +520,11 @@ async function translateProjectData(projects) {
         translator.saveCache();
         console.log('Project data translation completed.');
         
+        return translatedProjects;
+        
     } catch (error) {
         console.error('Project data translation failed:', error.message);
+        return projects; // 翻译失败时返回原始数据
     }
 }
 

@@ -9,6 +9,7 @@
     "translate-plugin-data": "node translate-plugin-data.js",
     "test-translation": "node test-translation.js",
     "test-duplicate-prevention": "node test-duplicate-prevention.js",
+    "demo-dual-files": "node demo-dual-files.js",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
