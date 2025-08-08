@@ -1,54 +1,67 @@
 [
   {
     "name": "Jellyfin",
-    "repositoryUrl": "https://repo.jellyfin.org/files/plugin/manifest.json"
+    "repositoryUrl": "https://repo.jellyfin.org/files/plugin/manifest.json",
+    "tags": ["official", "stable"]
   },
   {
     "name": "Jellyfin Unstable",
-    "repositoryUrl": "https://repo.jellyfin.org/files/plugin-unstable/manifest.json"
+    "repositoryUrl": "https://repo.jellyfin.org/files/plugin-unstable/manifest.json",
+    "tags": ["official", "unstable", "beta"]
   },
   {
     "name": "9p4's Single-Sign-On (SSO) Repo",
-    "repositoryUrl": "https://raw.githubusercontent.com/9p4/jellyfin-plugin-sso/manifest-release/manifest.json"
+    "repositoryUrl": "https://raw.githubusercontent.com/9p4/jellyfin-plugin-sso/manifest-release/manifest.json",
+    "tags": ["authentication", "sso", "third-party"]
   },
   {
     "name": "Ani-Sync Repo",
-    "repositoryUrl": "https://raw.githubusercontent.com/vosmiic/jellyfin-ani-sync/master/manifest.json"
+    "repositoryUrl": "https://raw.githubusercontent.com/vosmiic/jellyfin-ani-sync/master/manifest.json",
+    "tags": ["anime", "sync", "metadata", "third-party", "official-community"]
   },
   {
     "name": "danieladov's Repo",
-    "repositoryUrl": "https://raw.githubusercontent.com/danieladov/JellyfinPluginManifest/master/manifest.json"
+    "repositoryUrl": "https://raw.githubusercontent.com/danieladov/JellyfinPluginManifest/master/manifest.json",
+    "tags": ["third-party", "community"]
   },
   {
     "name": "dkanada's Repo",
-    "repositoryUrl": "https://raw.githubusercontent.com/dkanada/jellyfin-plugin-intros/master/manifest.json"
+    "repositoryUrl": "https://raw.githubusercontent.com/dkanada/jellyfin-plugin-intros/master/manifest.json",
+    "tags": ["intros", "video", "third-party", "official-community"]
   },
   {
     "name": "k-matti's Repo",
-    "repositoryUrl": "https://raw.githubusercontent.com/k-matti/jellyfin-plugin-repository/master/manifest.json"
+    "repositoryUrl": "https://raw.githubusercontent.com/k-matti/jellyfin-plugin-repository/master/manifest.json",
+    "tags": ["third-party", "community"]
   },
   {
     "name": "LinFor's Repo",
-    "repositoryUrl": "https://raw.githubusercontent.com/LinFor/jellyfin-plugin-kinopoisk/master/dist/manifest.json"
+    "repositoryUrl": "https://raw.githubusercontent.com/LinFor/jellyfin-plugin-kinopoisk/master/dist/manifest.json",
+    "tags": ["kinopoisk", "metadata", "russian", "third-party"]
   },
   {
     "name": "LizardByte's Repo",
-    "repositoryUrl": "https://app.lizardbyte.dev/jellyfin-plugin-repo/manifest.json"
+    "repositoryUrl": "https://app.lizardbyte.dev/jellyfin-plugin-repo/manifest.json",
+    "tags": ["third-party", "community", "lizardbyte"]
   },
   {
     "name": "ShokoAnime's Repo",
-    "repositoryUrl": "https://raw.githubusercontent.com/ShokoAnime/Shokofin/metadata/stable/manifest.json"
+    "repositoryUrl": "https://raw.githubusercontent.com/ShokoAnime/Shokofin/metadata/stable/manifest.json",
+    "tags": ["anime", "shoko", "metadata", "third-party", "official-community"]
   },
   {
     "name": "TubeArchivist's Repo",
-    "repositoryUrl": "https://raw.githubusercontent.com/tubearchivist/tubearchivist-jf-plugin/master/manifest.json"
+    "repositoryUrl": "https://raw.githubusercontent.com/tubearchivist/tubearchivist-jf-plugin/master/manifest.json",
+    "tags": ["youtube", "archival", "tubearchivist", "third-party", "official-community"]
   },
   {
     "name": "IntroSkipper's Repo",
-    "repositoryUrl": "https://manifest.intro-skipper.org/manifest.json"
+    "repositoryUrl": "https://manifest.intro-skipper.org/manifest.json",
+    "tags": ["intro-skipper", "automation", "third-party", "official-community"]
   },
   {
     "name": "Metashark' Repo",
-    "repositoryUrl": "https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json"
+    "repositoryUrl": "https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json",
+    "tags": ["metadata", "chinese", "third-party"]
   }
 ]

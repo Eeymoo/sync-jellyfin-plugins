@@ -61,77 +61,77 @@ git clone https://github.com/Eeymoo/sync-jellyfin-plugins.git
 - **[Jellyfin](https://repo.jellyfin.org/files/plugin/manifest.json)** 2025-08-08T00:16:49.651Z
 
 ```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Jellyfin/manifest.json
+https://repo.jellyfin.org/files/plugin/manifest.json
 ```
 
 
 - **[Jellyfin Unstable](https://repo.jellyfin.org/files/plugin-unstable/manifest.json)** 2025-08-08T00:16:49.672Z
 
 ```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Jellyfin_Unstable/manifest.json
+https://repo.jellyfin.org/files/plugin-unstable/manifest.json
 ```
 
 
 - **[9p4's Single-Sign-On (SSO) Repo](https://raw.githubusercontent.com/9p4/jellyfin-plugin-sso/manifest-release/manifest.json)** 2025-08-08T00:16:49.673Z
 
 ```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/9p4s_SingleSignOn_SSO_Repo/manifest.json
+https://raw.githubusercontent.com/9p4/jellyfin-plugin-sso/manifest-release/manifest.json
 ```
 
 
 - **[Ani-Sync Repo](https://raw.githubusercontent.com/vosmiic/jellyfin-ani-sync/master/manifest.json)** 2025-08-08T00:16:49.674Z
 
 ```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/AniSync_Repo/manifest.json
+https://raw.githubusercontent.com/vosmiic/jellyfin-ani-sync/master/manifest.json
 ```
 
 
 - **[danieladov's Repo](https://raw.githubusercontent.com/danieladov/JellyfinPluginManifest/master/manifest.json)** 2025-08-08T00:16:49.675Z
 
 ```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/danieladovs_Repo/manifest.json
+https://raw.githubusercontent.com/danieladov/JellyfinPluginManifest/master/manifest.json
 ```
 
 
 - **[dkanada's Repo](https://raw.githubusercontent.com/dkanada/jellyfin-plugin-intros/master/manifest.json)** 2025-08-08T00:16:49.676Z
 
 ```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/dkanadas_Repo/manifest.json
+https://raw.githubusercontent.com/dkanada/jellyfin-plugin-intros/master/manifest.json
 ```
 
 
 - **[k-matti's Repo](https://raw.githubusercontent.com/k-matti/jellyfin-plugin-repository/master/manifest.json)** 2025-08-08T00:16:49.677Z
 
 ```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/kmattis_Repo/manifest.json
+https://raw.githubusercontent.com/k-matti/jellyfin-plugin-repository/master/manifest.json
 ```
 
 
 - **[LinFor's Repo](https://raw.githubusercontent.com/LinFor/jellyfin-plugin-kinopoisk/master/dist/manifest.json)** 2025-08-08T00:16:49.678Z
 
 ```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/LinFors_Repo/manifest.json
+https://raw.githubusercontent.com/LinFor/jellyfin-plugin-kinopoisk/master/dist/manifest.json
 ```
 
 
 - **[LizardByte's Repo](https://app.lizardbyte.dev/jellyfin-plugin-repo/manifest.json)** 2025-08-08T00:16:49.678Z
 
 ```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/LizardBytes_Repo/manifest.json
+https://app.lizardbyte.dev/jellyfin-plugin-repo/manifest.json
 ```
 
 
 - **[ShokoAnime's Repo](https://raw.githubusercontent.com/ShokoAnime/Shokofin/metadata/stable/manifest.json)** 2025-08-08T00:16:49.680Z
 
 ```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/ShokoAnimes_Repo/manifest.json
+https://raw.githubusercontent.com/ShokoAnime/Shokofin/metadata/stable/manifest.json
 ```
 
 
 - **[TubeArchivist's Repo](https://raw.githubusercontent.com/tubearchivist/tubearchivist-jf-plugin/master/manifest.json)** 2025-08-08T00:16:49.681Z
 
 ```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/TubeArchivists_Repo/manifest.json
+https://raw.githubusercontent.com/tubearchivist/tubearchivist-jf-plugin/master/manifest.json
 ```
 
 
@@ -145,7 +145,7 @@ https://manifest.intro-skipper.org/manifest.json
 - **[Metashark' Repo](https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json)** 2025-08-08T00:16:49.682Z
 
 ```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Metashark_Repo/manifest.json
+https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json
 ```
 
 

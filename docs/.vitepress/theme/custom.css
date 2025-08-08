@@ -1,12 +1,78 @@
 :root {
   --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: linear-gradient(90deg, #AA5CC3 0%, #00A4DC 100%);
-  --vp-c-bg: #101010;
-  --vp-c-brand-1: #00A4DC;
+  --vp-home-hero-name-background: linear-gradient(90deg, #DE2910 0%, #FFDE00 100%);
+  --vp-c-brand-1: #DE2910;
+  --vp-c-brand-2: #DE2910;
+  --vp-c-brand-3: #DE2910;
+  --vp-c-text-1: #2c3e50;
+  --vp-c-text-2: #476582;
+  /* 国旗红色用于链接和按钮 */
+  --vp-button-brand-bg: #DE2910;
+  --vp-button-brand-hover-bg: #c22009;
+  /* 国旗黄色用于强调 */
+  --vp-c-warning: #FFDE00;
+  --vp-c-warning-1: #FFDE00;
 }
 
 .vp-home-hero-image {
   background: #000B25;
   border-radius: 20px;
   padding: 16px;
+}
+
+/* 自定义组件样式 */
+.repo-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 12px 0;
+  background: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.repo-item:hover {
+  border-color: #DE2910;
+  box-shadow: 0 2px 8px rgba(222, 41, 16, 0.1);
+}
+
+.repo-name a {
+  color: #DE2910 !important;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.repo-name a:hover {
+  color: #c22009 !important;
+}
+
+.copy-btn {
+  background-color: #DE2910 !important;
+  color: white !important;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s;
+}
+
+.copy-btn:hover {
+  background-color: #c22009 !important;
+}
+
+.status-badge.status-success {
+  background-color: #10b981;
+}
+
+.status-badge.status-error {
+  background-color: #DE2910;
+}
+
+.success-rate {
+  color: #FFDE00;
+  background-color: #DE2910;
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
 }

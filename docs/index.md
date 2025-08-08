@@ -7,11 +7,11 @@ hero:
   name: Jellyfin 插件镜像站
   tagline: 专注于 Jellyfin 插件的中文本地化与高速镜像服务
   image:
-    src: https://github.com/jellyfin/jellyfin-ux/blob/master/branding/web/favicons/touchicon512.png?raw=true
+    src: /assets/icon.png
     alt: Jellyfin Logo
   actions:
     - theme: brand
-      text: 如何实现
+      text: 我们做了什么 ?
       link: /readme
     - theme: alt
       text: 开始使用

@@ -2,8 +2,12 @@ export default {
   lang: "zh-CN",
   title: "Jellyfin 插件镜像站",
   description: "加速国内 Jellyfin 插件的下载和更新",
+  icon: "/assets/icon.png",
 
   head: [
+    // 网站图标
+    ["link", { rel: "icon", href: "/assets/icon.png" }],
+    ["link", { rel: "apple-touch-icon", href: "/assets/icon.png" }],
     [
       "meta",
       {
@@ -13,6 +17,7 @@ export default {
     ],
     ["meta", { name: "author", content: "Eeymoo" }],
     ["meta", { property: "og:title", content: "Jellyfin 插件镜像站" }],
+    ["meta", { property: "og:image", content: "/assets/icon.png" }],
     [
       "meta",
       {
@@ -32,9 +37,10 @@ export default {
   ],
 
   themeConfig: {
+    logo: "/assets/icon.png",
     sidebar: [
       {
-        text: "如何实现",
+        text: "我们做了什么 ?",
         link: "/readme",
       },
       {
@@ -42,13 +48,40 @@ export default {
         link: "/get-started",
       },
       {
+        text: "仓库状态监控",
+        link: "/status",
+      },
+      {
         text: "贡献代码",
         link: "/contribute",
       },
       {
-        text: "Github",
-        link: "https://github.com/Eeymoo/sync-jellyfin-plugins",
-        target: "_blank",
+        text: "相关链接",
+        link: "/links",
+      },
+      {
+        items: [
+          {
+            text: "Github",
+            link: "https://github.com/Eeymoo/sync-jellyfin-plugins",
+            target: "_blank",
+          },
+          {
+            text: "🏠 Jellyfin 官网",
+            link: "https://jellyfin.org/",
+            target: "_blank",
+          },
+          {
+            text: "📚 VitePress 官网",
+            link: "https://vitepress.dev/",
+            target: "_blank",
+          },
+          {
+            text: "🧩 Jellyfin 插件仓库",
+            link: "https://github.com/jellyfin/jellyfin-plugin-repository",
+            target: "_blank",
+          },
+        ],
       },
     ],
     footer: {
