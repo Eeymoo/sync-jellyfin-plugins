@@ -4,23 +4,23 @@
   name="Jellyfin"
   originalUrl="https://repo.jellyfin.org/files/plugin/manifest.json"
   repositoryUrl="https://repo.jellyfin.org/files/plugin/manifest.json"
-  timestamp="2025-08-08T16:14:36.147Z"
+  timestamp="2025-08-09T16:14:13.323Z"
   status="error"
-  :successRate="33"
+  :successRate="29"
 />
 <RepoItem
   name="Jellyfin Unstable"
   originalUrl="https://repo.jellyfin.org/files/plugin-unstable/manifest.json"
-  repositoryUrl="https://repo.jellyfin.org/files/plugin-unstable/manifest.json"
-  timestamp="2025-08-08T16:14:36.167Z"
-  status="error"
-  :successRate="67"
+  repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Jellyfin_Unstable/manifest.json"
+  timestamp="2025-08-09T16:14:13.343Z"
+  status="success"
+  :successRate="71"
 />
 <RepoItem
   name="Ani-Sync Repo"
   originalUrl="https://raw.githubusercontent.com/vosmiic/jellyfin-ani-sync/master/manifest.json"
   repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/AniSync_Repo/manifest.json"
-  timestamp="2025-08-08T16:14:36.169Z"
+  timestamp="2025-08-09T16:14:13.345Z"
   status="success"
   :successRate="100"
 />
@@ -28,7 +28,7 @@
   name="dkanada's Repo"
   originalUrl="https://raw.githubusercontent.com/dkanada/jellyfin-plugin-intros/master/manifest.json"
   repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/dkanadas_Repo/manifest.json"
-  timestamp="2025-08-08T16:14:36.171Z"
+  timestamp="2025-08-09T16:14:13.347Z"
   status="success"
   :successRate="100"
 />
@@ -36,7 +36,7 @@
   name="ShokoAnime's Repo"
   originalUrl="https://raw.githubusercontent.com/ShokoAnime/Shokofin/metadata/stable/manifest.json"
   repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/ShokoAnimes_Repo/manifest.json"
-  timestamp="2025-08-08T16:14:36.174Z"
+  timestamp="2025-08-09T16:14:13.350Z"
   status="success"
   :successRate="100"
 />
@@ -44,7 +44,7 @@
   name="TubeArchivist's Repo"
   originalUrl="https://raw.githubusercontent.com/tubearchivist/tubearchivist-jf-plugin/master/manifest.json"
   repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/TubeArchivists_Repo/manifest.json"
-  timestamp="2025-08-08T16:14:36.176Z"
+  timestamp="2025-08-09T16:14:13.351Z"
   status="success"
   :successRate="100"
 />
@@ -52,7 +52,7 @@
   name="IntroSkipper's Repo"
   originalUrl="https://manifest.intro-skipper.org/manifest.json"
   repositoryUrl="https://manifest.intro-skipper.org/manifest.json"
-  timestamp="2025-08-08T16:14:36.176Z"
+  timestamp="2025-08-09T16:14:13.351Z"
   status="error"
   :successRate="0"
 />
@@ -60,7 +60,7 @@
   name="9p4's Single-Sign-On (SSO) Repo"
   originalUrl="https://raw.githubusercontent.com/9p4/jellyfin-plugin-sso/manifest-release/manifest.json"
   repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/9p4s_SingleSignOn_SSO_Repo/manifest.json"
-  timestamp="2025-08-08T16:14:36.168Z"
+  timestamp="2025-08-09T16:14:13.344Z"
   status="success"
   :successRate="100"
 />
@@ -68,7 +68,7 @@
   name="danieladov's Repo"
   originalUrl="https://raw.githubusercontent.com/danieladov/JellyfinPluginManifest/master/manifest.json"
   repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/danieladovs_Repo/manifest.json"
-  timestamp="2025-08-08T16:14:36.170Z"
+  timestamp="2025-08-09T16:14:13.346Z"
   status="success"
   :successRate="100"
 />
@@ -76,7 +76,7 @@
   name="k-matti's Repo"
   originalUrl="https://raw.githubusercontent.com/k-matti/jellyfin-plugin-repository/master/manifest.json"
   repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/kmattis_Repo/manifest.json"
-  timestamp="2025-08-08T16:14:36.171Z"
+  timestamp="2025-08-09T16:14:13.347Z"
   status="success"
   :successRate="100"
 />
@@ -84,7 +84,7 @@
   name="LinFor's Repo"
   originalUrl="https://raw.githubusercontent.com/LinFor/jellyfin-plugin-kinopoisk/master/dist/manifest.json"
   repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/LinFors_Repo/manifest.json"
-  timestamp="2025-08-08T16:14:36.172Z"
+  timestamp="2025-08-09T16:14:13.348Z"
   status="success"
   :successRate="100"
 />
@@ -92,7 +92,7 @@
   name="LizardByte's Repo"
   originalUrl="https://app.lizardbyte.dev/jellyfin-plugin-repo/manifest.json"
   repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/LizardBytes_Repo/manifest.json"
-  timestamp="2025-08-08T16:14:36.173Z"
+  timestamp="2025-08-09T16:14:13.349Z"
   status="success"
   :successRate="100"
 />
@@ -100,7 +100,7 @@
   name="Metashark' Repo"
   originalUrl="https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json"
   repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Metashark_Repo/manifest.json"
-  timestamp="2025-08-08T16:14:36.177Z"
+  timestamp="2025-08-09T16:14:13.352Z"
   status="success"
   :successRate="100"
 />
@@ -108,7 +108,7 @@
   name="AudioMuse-AI's Repo"
   originalUrl="https://raw.githubusercontent.com/neptunehub/audiomuse-ai-plugin/master/manifest.json"
   repositoryUrl="https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/AudioMuseAIs_Repo/manifest.json"
-  timestamp="2025-08-08T16:14:36.178Z"
+  timestamp="2025-08-09T16:14:13.352Z"
   status="success"
   :successRate="100"
 />
