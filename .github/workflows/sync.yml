@@ -1,6 +1,9 @@
 name: Sync Nightly Workflow
 
 on:
+  push:
+    branches:
+      - master  # 当 master 分支有推送时自动执行
   schedule:
     - cron: '0 16 * * *'  # 每天晚上 24:00 (UTC+8 北京时间) 执行
   workflow_dispatch:  # 支持通过 URL 手动触发
