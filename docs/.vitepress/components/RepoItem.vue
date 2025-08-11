@@ -14,14 +14,12 @@
     
     <div class="repo-url">
       <label class="url-label">镜像地址:</label>
-      <code class="url-code">{{ repositoryUrl || originalUrl }}</code>
-      <button
+      <code 
+        class="url-code clickable" 
+        :class="{ 'flash-guide': showCopyGuide }"
         @click="copyToClipboard(repositoryUrl || originalUrl)"
-        class="copy-btn"
-        title="复制镜像地址"
-      >
-        复制
-      </button>
+        title="点击复制地址"
+      >{{ repositoryUrl || originalUrl }}</code>
     </div>
     
     <!-- 失败时的提示 -->
@@ -32,14 +30,11 @@
           <p><strong>镜像同步失败！</strong>原始链接依然有效，但如果有更新需要等待下次同步成功后才能在镜像中看到。</p>
           <p>您可以直接使用原始地址：</p>
           <div class="original-url-fallback">
-            <code class="url-code">{{ originalUrl }}</code>
-            <button
+            <code 
+              class="url-code clickable" 
               @click="copyToClipboard(originalUrl)"
-              class="copy-btn copy-btn-fallback"
-              title="复制原始地址"
-            >
-              复制原始地址
-            </button>
+              title="点击复制地址"
+            >{{ originalUrl }}</code>
           </div>
         </div>
       </div>
@@ -61,13 +56,19 @@
             <div class="version-links">
               <div class="version-link">
                 <span class="link-type">翻译版:</span>
-                <code class="url-code-small">{{ urls.translated }}</code>
-                <button @click="copyToClipboard(urls.translated)" class="copy-btn-small">复制</button>
+                <code 
+                  class="url-code-small clickable" 
+                  @click="copyToClipboard(urls.translated)"
+                  title="点击复制地址"
+                >{{ urls.translated }}</code>
               </div>
               <div class="version-link">
                 <span class="link-type">原始版:</span>
-                <code class="url-code-small">{{ urls.original }}</code>
-                <button @click="copyToClipboard(urls.original)" class="copy-btn-small">复制</button>
+                <code 
+                  class="url-code-small clickable" 
+                  @click="copyToClipboard(urls.original)"
+                  title="点击复制地址"
+                >{{ urls.original }}</code>
               </div>
             </div>
           </div>
@@ -83,7 +84,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 
 const props = defineProps({
   name: String,
@@ -93,6 +94,17 @@ const props = defineProps({
   status: String,
   successRate: Number,
   versionUrls: String
+})
+
+// 复制引导状态
+const showCopyGuide = ref(false)
+
+// 检查是否需要显示复制引导
+onMounted(() => {
+  const hasSeenGuide = localStorage.getItem('jellyfin-copy-guide-seen')
+  if (!hasSeenGuide) {
+    showCopyGuide.value = true
+  }
 })
 
 const parsedVersionUrls = computed(() => {
@@ -118,15 +130,56 @@ const formatDate = (timestamp) => {
 const copyToClipboard = async (text) => {
   try {
     await navigator.clipboard.writeText(text)
-    alert('镜像地址已复制')
+    
+    // 复制成功后隐藏引导并保存到本地存储
+    if (showCopyGuide.value) {
+      showCopyGuide.value = false
+      localStorage.setItem('jellyfin-copy-guide-seen', 'true')
+    }
+    
+    // 创建临时提示
+    const toast = document.createElement('div')
+    toast.textContent = '✅ URL 已复制到剪贴板'
+    toast.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #48bb78;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      z-index: 10000;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    `
+    document.body.appendChild(toast)
+    
+    setTimeout(() => {
+      document.body.removeChild(toast)
+    }, 2000)
+    
   } catch (err) {
+    console.error('Failed to copy text: ', err)
+    // 降级方案
     const textArea = document.createElement('textarea')
     textArea.value = text
     document.body.appendChild(textArea)
+    textArea.focus()
     textArea.select()
-    document.execCommand('copy')
+    try {
+      document.execCommand('copy')
+      
+      // 复制成功后隐藏引导
+      if (showCopyGuide.value) {
+        showCopyGuide.value = false
+        localStorage.setItem('jellyfin-copy-guide-seen', 'true')
+      }
+      
+      alert('URL 已复制到剪贴板')
+    } catch (fallbackErr) {
+      console.error('Fallback copy failed: ', fallbackErr)
+    }
     document.body.removeChild(textArea)
-    alert('镜像地址已复制')
   }
 }
 </script>
@@ -217,19 +270,33 @@ const copyToClipboard = async (text) => {
   min-width: 200px;
 }
 
-.copy-btn {
-  padding: 6px 8px;
-  background: #3182ce;
-  color: white;
-  border: none;
-  border-radius: 4px;
+.url-code.clickable {
   cursor: pointer;
-  font-size: 12px;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
 }
 
-.copy-btn:hover {
-  background: #2c5282;
+.url-code.clickable:hover {
+  background: #e2e8f0;
+  border-color: #cbd5e0;
+}
+
+.url-code.flash-guide {
+  animation: flashBorder 3s infinite ease-in-out;
+}
+
+@keyframes flashBorder {
+  0%, 70% {
+    border-color: #e2e8f0;
+    box-shadow: none;
+  }
+  85% {
+    border-color: #90cdf4;
+    box-shadow: 0 0 0 1px rgba(144, 205, 244, 0.2);
+  }
+  100% {
+    border-color: #e2e8f0;
+    box-shadow: none;
+  }
 }
 
 .error-notice {
@@ -273,21 +340,6 @@ const copyToClipboard = async (text) => {
   gap: 6px;
   margin-top: 6px;
   flex-wrap: wrap;
-}
-
-.copy-btn-fallback {
-  padding: 4px 8px;
-  background: #e53e3e;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 11px;
-  transition: background 0.2s ease;
-}
-
-.copy-btn-fallback:hover {
-  background: #c53030;
 }
 
 .version-section {
@@ -389,19 +441,14 @@ const copyToClipboard = async (text) => {
   min-width: 150px;
 }
 
-.copy-btn-small {
-  padding: 4px 6px;
-  background: #6c757d;
-  color: white;
-  border: none;
-  border-radius: 3px;
+.url-code-small.clickable {
   cursor: pointer;
-  font-size: 10px;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
 }
 
-.copy-btn-small:hover {
-  background: #495057;
+.url-code-small.clickable:hover {
+  background: #f8f9fa;
+  border-color: #adb5bd;
 }
 
 .repo-stats {
@@ -439,6 +486,30 @@ const copyToClipboard = async (text) => {
   color: #e2e8f0;
 }
 
+.dark .url-code.clickable:hover {
+  background: #718096;
+  border-color: #a0aec0;
+}
+
+.dark .url-code.flash-guide {
+  animation: flashBorderDark 3s infinite ease-in-out;
+}
+
+@keyframes flashBorderDark {
+  0%, 70% {
+    border-color: #718096;
+    box-shadow: none;
+  }
+  85% {
+    border-color: #90cdf4;
+    box-shadow: 0 0 0 1px rgba(144, 205, 244, 0.2);
+  }
+  100% {
+    border-color: #718096;
+    box-shadow: none;
+  }
+}
+
 .dark .error-notice {
   background: #2d1b1b;
   border-color: #c53030;
@@ -446,13 +517,5 @@ const copyToClipboard = async (text) => {
 
 .dark .error-text p {
   color: #fed7d7;
-}
-
-.dark .copy-btn-fallback {
-  background: #c53030;
-}
-
-.dark .copy-btn-fallback:hover {
-  background: #9c2626;
 }
 </style>
