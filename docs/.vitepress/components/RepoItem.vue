@@ -13,7 +13,7 @@
     </div>
     
     <div class="repo-url">
-      <label class="url-label">默认镜像:</label>
+      <label class="url-label">镜像地址:</label>
       <code class="url-code">{{ repositoryUrl || originalUrl }}</code>
       <button
         @click="copyToClipboard(repositoryUrl || originalUrl)"
@@ -22,6 +22,27 @@
       >
         复制
       </button>
+    </div>
+    
+    <!-- 失败时的提示 -->
+    <div v-if="status === 'error'" class="error-notice">
+      <div class="error-content">
+        <span class="error-icon">⚠️</span>
+        <div class="error-text">
+          <p><strong>镜像同步失败！</strong>原始链接依然有效，但如果有更新需要等待下次同步成功后才能在镜像中看到。</p>
+          <p>您可以直接使用原始地址：</p>
+          <div class="original-url-fallback">
+            <code class="url-code">{{ originalUrl }}</code>
+            <button
+              @click="copyToClipboard(originalUrl)"
+              class="copy-btn copy-btn-fallback"
+              title="复制原始地址"
+            >
+              复制原始地址
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
     
     <!-- 版本特定链接 -->
@@ -211,6 +232,64 @@ const copyToClipboard = async (text) => {
   background: #2c5282;
 }
 
+.error-notice {
+  margin: 10px 0;
+  padding: 12px;
+  background: #fff5f5;
+  border: 1px solid #fed7d7;
+  border-radius: 6px;
+  border-left: 4px solid #f56565;
+}
+
+.error-content {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.error-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.error-text {
+  flex: 1;
+}
+
+.error-text p {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  color: #c53030;
+  line-height: 1.4;
+}
+
+.error-text p:last-child {
+  margin-bottom: 0;
+}
+
+.original-url-fallback {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.copy-btn-fallback {
+  padding: 4px 8px;
+  background: #e53e3e;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  transition: background 0.2s ease;
+}
+
+.copy-btn-fallback:hover {
+  background: #c53030;
+}
+
 .version-section {
   margin-top: 15px;
   border-top: 1px solid #e2e8f0;
@@ -358,5 +437,22 @@ const copyToClipboard = async (text) => {
   background: #4a5568;
   border-color: #718096;
   color: #e2e8f0;
+}
+
+.dark .error-notice {
+  background: #2d1b1b;
+  border-color: #c53030;
+}
+
+.dark .error-text p {
+  color: #fed7d7;
+}
+
+.dark .copy-btn-fallback {
+  background: #c53030;
+}
+
+.dark .copy-btn-fallback:hover {
+  background: #9c2626;
 }
 </style>

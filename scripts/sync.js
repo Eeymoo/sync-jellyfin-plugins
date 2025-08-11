@@ -148,32 +148,41 @@ async function processManifestItem(item, existingItem = null) {
 
     const itemName = formatName(item.name);
 
-    // 从配置中获取支持的版本，如果没有配置则使用默认版本
-    const supportedVersions = item.versions || { "10.11": { title: "默认版本", description: "标准插件版本" } };
+    // 检查是否配置了版本信息
+    const hasVersionConfig = item.versions && Object.keys(item.versions).length > 0;
+    const supportedVersions = item.versions || {};
     const versions = Object.keys(supportedVersions);
 
     // 封装一次真正的处理尝试
     const attemptProcess = async () => {
-        const manifestsByVersion = {};
+        let manifestsByVersion = {};
         
-        for (const version of versions) {
-            try {
-                const headers = { 'User-Agent': `Jellyfin-Server/${version}` };
-                const response = await axios.get(item.repositoryUrl, { headers });
-                manifestsByVersion[version] = response.data;
-                console.log(`[${item.name}] 成功获取 Jellyfin ${version} 版本的 manifest`);
-            } catch (error) {
-                console.warn(`[${item.name}] 获取 Jellyfin ${version} manifest 失败:`, error.message);
-                // 如果某个版本失败，使用默认请求
+        if (hasVersionConfig) {
+            // 如果配置了版本，为每个版本获取 manifest
+            for (const version of versions) {
                 try {
-                    const response = await axios.get(item.repositoryUrl);
+                    const headers = { 'User-Agent': `Jellyfin-Server/${version}` };
+                    const response = await axios.get(item.repositoryUrl, { headers });
                     manifestsByVersion[version] = response.data;
-                    console.log(`[${item.name}] 使用默认请求获取 Jellyfin ${version} 的 manifest`);
-                } catch (fallbackError) {
-                    console.error(`[${item.name}] 默认请求也失败:`, fallbackError.message);
-                    throw fallbackError;
+                    console.log(`[${item.name}] 成功获取 Jellyfin ${version} 版本的 manifest`);
+                } catch (error) {
+                    console.warn(`[${item.name}] 获取 Jellyfin ${version} manifest 失败:`, error.message);
+                    // 如果某个版本失败，使用默认请求
+                    try {
+                        const response = await axios.get(item.repositoryUrl);
+                        manifestsByVersion[version] = response.data;
+                        console.log(`[${item.name}] 使用默认请求获取 Jellyfin ${version} 的 manifest`);
+                    } catch (fallbackError) {
+                        console.error(`[${item.name}] 默认请求也失败:`, fallbackError.message);
+                        throw fallbackError;
+                    }
                 }
             }
+        } else {
+            // 如果没有配置版本，使用原始行为（不传递版本信息）
+            console.log(`[${item.name}] 没有版本配置，使用原始方式获取 manifest`);
+            const response = await axios.get(item.repositoryUrl);
+            manifestsByVersion['default'] = response.data;
         }
         
         // 处理每个版本的 manifest
@@ -181,8 +190,12 @@ async function processManifestItem(item, existingItem = null) {
         ensureDir(downloadDirPath);
         
         for (const [version, projects] of Object.entries(manifestsByVersion)) {
-            const versionInfo = supportedVersions[version];
-            console.log(`[${item.name}] 处理版本: ${version} - ${versionInfo.title}`);
+            if (hasVersionConfig) {
+                const versionInfo = supportedVersions[version];
+                console.log(`[${item.name}] 处理版本: ${version} - ${versionInfo.title}`);
+            } else {
+                console.log(`[${item.name}] 处理默认版本`);
+            }
             
             const resultProjects = [];
             
@@ -208,40 +221,64 @@ async function processManifestItem(item, existingItem = null) {
                 });
             }
             
-            // 为每个 Jellyfin 版本保存不同的 manifest 文件
+            // 为每个版本保存不同的 manifest 文件
             const originalProjects = JSON.parse(JSON.stringify(resultProjects));
             const translatedProjects = await translateProjectData(resultProjects);
             
-            // 原始版本文件
-            const originalFilePath = path.join(downloadDir, itemName, `manifest-original-${version}.json`);
-            const originalOssKey = `plugins/${itemName}/manifest-original-${version}.json`;
-            fs.writeFileSync(originalFilePath, JSON.stringify(originalProjects, null, 2));
-            await uploadFileToOSS(originalFilePath, originalOssKey);
-            
-            // 翻译版本文件
-            const translatedFilePath = path.join(downloadDir, itemName, `manifest-${version}.json`);
-            const translatedOssKey = `plugins/${itemName}/manifest-${version}.json`;
-            fs.writeFileSync(translatedFilePath, JSON.stringify(translatedProjects, null, 2));
-            await uploadFileToOSS(translatedFilePath, translatedOssKey);
+            if (hasVersionConfig) {
+                // 有版本配置时，保存版本特定的文件
+                // 原始版本文件
+                const originalFilePath = path.join(downloadDir, itemName, `manifest-original-${version}.json`);
+                const originalOssKey = `plugins/${itemName}/manifest-original-${version}.json`;
+                fs.writeFileSync(originalFilePath, JSON.stringify(originalProjects, null, 2));
+                await uploadFileToOSS(originalFilePath, originalOssKey);
+                
+                // 翻译版本文件
+                const translatedFilePath = path.join(downloadDir, itemName, `manifest-${version}.json`);
+                const translatedOssKey = `plugins/${itemName}/manifest-${version}.json`;
+                fs.writeFileSync(translatedFilePath, JSON.stringify(translatedProjects, null, 2));
+                await uploadFileToOSS(translatedFilePath, translatedOssKey);
+            } else {
+                // 没有版本配置时，保存传统的文件名
+                // 原始版本文件
+                const originalFilePath = path.join(downloadDir, itemName, 'manifest-original.json');
+                const originalOssKey = `plugins/${itemName}/manifest-original.json`;
+                fs.writeFileSync(originalFilePath, JSON.stringify(originalProjects, null, 2));
+                await uploadFileToOSS(originalFilePath, originalOssKey);
+                
+                // 翻译版本文件
+                const translatedFilePath = path.join(downloadDir, itemName, 'manifest.json');
+                const translatedOssKey = `plugins/${itemName}/manifest.json`;
+                fs.writeFileSync(translatedFilePath, JSON.stringify(translatedProjects, null, 2));
+                await uploadFileToOSS(translatedFilePath, translatedOssKey);
+            }
         }
         
-        // 获取默认版本
-        const defaultVersion = versions.includes('10.11') ? '10.11' : versions[0];
-        
-        // 默认使用配置的首选版本作为主要访问地址
-        result.repositoryUrl = `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/plugins/${itemName}/manifest-${defaultVersion}.json`;
-        result.originalRepositoryUrl = `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/plugins/${itemName}/manifest-original-${defaultVersion}.json`;
-        
-        // 保存版本信息，包含版本配置
-        result.versionUrls = {};
-        for (const version of versions) {
-            const versionInfo = supportedVersions[version];
-            result.versionUrls[version] = {
-                translated: `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/plugins/${itemName}/manifest-${version}.json`,
-                original: `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/plugins/${itemName}/manifest-original-${version}.json`,
-                title: versionInfo.title,
-                description: versionInfo.description
-            };
+        if (hasVersionConfig) {
+            // 有版本配置时，设置版本特定的 URL
+            const defaultVersion = versions.includes('10.11') ? '10.11' : versions[0];
+            
+            result.repositoryUrl = `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/plugins/${itemName}/manifest-${defaultVersion}.json`;
+            result.originalRepositoryUrl = `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/plugins/${itemName}/manifest-original-${defaultVersion}.json`;
+            
+            // 保存版本信息，包含版本配置
+            result.versionUrls = {};
+            for (const version of versions) {
+                const versionInfo = supportedVersions[version];
+                result.versionUrls[version] = {
+                    translated: `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/plugins/${itemName}/manifest-${version}.json`,
+                    original: `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/plugins/${itemName}/manifest-original-${version}.json`,
+                    title: versionInfo.title,
+                    description: versionInfo.description
+                };
+            }
+        } else {
+            // 没有版本配置时，使用传统的 URL
+            result.repositoryUrl = `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/plugins/${itemName}/manifest.json`;
+            result.originalRepositoryUrl = `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/plugins/${itemName}/manifest-original.json`;
+            
+            // 不设置版本信息
+            result.versionUrls = {};
         }
         
         result.status = 'success';

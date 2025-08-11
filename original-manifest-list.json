@@ -2,28 +2,12 @@
   {
     "name": "Jellyfin",
     "repositoryUrl": "https://repo.jellyfin.org/files/plugin/manifest.json",
-    "tags": ["official", "stable"],
-    "versions": {
-      "10.10.7": {
-        "title": "稳定版本 (Jellyfin 10.10.7)",
-        "description": "适用于 Jellyfin 10.10.7 的稳定插件版本"
-      },
-      "10.11": {
-        "title": "最新版本 (Jellyfin 10.11+)",
-        "description": "适用于 Jellyfin 10.11 及更高版本的最新插件"
-      }
-    }
+    "tags": ["official", "stable"]
   },
   {
     "name": "Jellyfin Unstable",
     "repositoryUrl": "https://repo.jellyfin.org/files/plugin-unstable/manifest.json",
-    "tags": ["official", "unstable", "beta"],
-    "versions": {
-      "10.11": {
-        "title": "开发版本 (Jellyfin 10.11+)",
-        "description": "适用于 Jellyfin 10.11+ 的开发版插件，包含最新功能但可能不稳定"
-      }
-    }
+    "tags": ["official", "unstable", "beta"]
   },
   {
     "name": "9p4's Single-Sign-On (SSO) Repo",

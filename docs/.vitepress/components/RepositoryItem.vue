@@ -32,9 +32,9 @@
     <div class="repo-info">
       <p class="last-update">最后更新: {{ formatDate(timestamp) }} (北京时间)</p>
       
-      <!-- 默认镜像 URL -->
+      <!-- 镜像地址 -->
       <div class="repo-url">
-        <label class="url-label">默认镜像 (Jellyfin 10.11+):</label>
+        <label class="url-label">镜像地址:</label>
         <input
           :value="repositoryUrl || originalUrl"
           readonly
@@ -42,6 +42,22 @@
         />
         <button
           @click="copyToClipboard(repositoryUrl || originalUrl)"
+          class="copy-btn"
+        >
+          复制
+        </button>
+      </div>
+      
+      <!-- 原始地址 -->
+      <div class="repo-url">
+        <label class="url-label">原始地址:</label>
+        <input
+          :value="originalUrl"
+          readonly
+          class="url-input"
+        />
+        <button
+          @click="copyToClipboard(originalUrl)"
           class="copy-btn"
         >
           复制
@@ -91,17 +107,35 @@
           </div>
         </div>
       </div>
+      
+      <!-- 如果没有版本配置，显示传统的原始文件链接 -->
+      <div v-if="!parsedVersionUrls || Object.keys(parsedVersionUrls).length === 0" class="traditional-links">
+        <div class="repo-url">
+          <label class="url-label">原始文件:</label>
+          <input
+            :value="repositoryUrl.replace('manifest.json', 'manifest-original.json')"
+            readonly
+            class="url-input"
+          />
+          <button
+            @click="copyToClipboard(repositoryUrl.replace('manifest.json', 'manifest-original.json'))"
+            class="copy-btn"
+          >
+            复制
+          </button>
+        </div>
+      </div>
     </div>
 
     <div class="status-history" v-if="parsedStatusHistory && parsedStatusHistory.length > 0">
       <h4>最近状态 (最近60次) - 时间为北京时间</h4>
       <div class="history-chart">
         <div
-          v-for="(record, index) in parsedStatusHistory.slice(0, 60)"
+          v-for="(item, index) in statusGrid"
           :key="index"
           class="history-dot"
-          :class="`status-${record.status}`"
-          :title="`${formatDate(record.timestamp)} (北京时间): ${record.status}${record.error ? ' - ' + record.error : ''}`"
+          :class="item.isPlaceholder ? 'status-placeholder' : `status-${item.status}`"
+          :title="item.isPlaceholder ? '暂无数据' : `${formatDate(item.timestamp)} (北京时间): ${item.status}${item.error ? ' - ' + item.error : ''}`"
         ></div>
       </div>
       <div class="history-stats">
@@ -163,6 +197,34 @@ const parsedStatusHistory = computed(() => {
     console.warn('Failed to parse statusHistory:', e)
     return []
   }
+})
+
+// 生成15x4的状态网格，最新数据在后面
+const statusGrid = computed(() => {
+  const totalSlots = 60
+  const history = parsedStatusHistory.value.slice(0, totalSlots)
+  const grid = []
+  
+  // 计算需要填充的灰色占位符数量
+  const placeholderCount = Math.max(0, totalSlots - history.length)
+  
+  // 先添加灰色占位符
+  for (let i = 0; i < placeholderCount; i++) {
+    grid.push({
+      isPlaceholder: true
+    })
+  }
+  
+  // 然后添加实际数据（最旧的在前面，最新的在后面）
+  const reversedHistory = [...history].reverse()
+  for (const record of reversedHistory) {
+    grid.push({
+      ...record,
+      isPlaceholder: false
+    })
+  }
+  
+  return grid
 })
 
 const formatDate = (timestamp) => {
@@ -352,18 +414,21 @@ const calculateSuccessRate = (history) => {
 }
 
 .history-chart {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  grid-template-rows: repeat(4, 1fr);
   gap: 3px;
   margin-bottom: 10px;
-  min-height: 20px;
+  min-height: 80px;
+  max-width: 100%;
 }
 
 .history-dot {
-  width: 12px;
-  height: 12px;
+  width: 100%;
+  height: 18px;
   border-radius: 2px;
   cursor: help;
+  aspect-ratio: 1;
 }
 
 .history-dot.status-success {
@@ -372,6 +437,10 @@ const calculateSuccessRate = (history) => {
 
 .history-dot.status-error {
   background: #f56565;
+}
+
+.history-dot.status-placeholder {
+  background: #e2e8f0;
 }
 
 .history-stats {
@@ -507,6 +576,12 @@ const calculateSuccessRate = (history) => {
   margin-top: 4px;
 }
 
+.traditional-links {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #e2e8f0;
+}
+
 /* 暗色主题支持 */
 .dark .repository-card {
   background: #2d3748;
@@ -535,5 +610,9 @@ const calculateSuccessRate = (history) => {
 
 .dark .error-message {
   color: #fc8181;
+}
+
+.dark .history-dot.status-placeholder {
+  background: #4a5568;
 }
 </style>
