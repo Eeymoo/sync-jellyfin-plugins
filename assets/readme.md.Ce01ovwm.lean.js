@@ -1,1 +1,0 @@
-import{_ as e,c as i,o as s,ae as t}from"./chunks/framework.Cd-3tpCq.js";const k=JSON.parse('{"title":"Jellyfin 插件镜像站","description":"","frontmatter":{},"headers":[],"relativePath":"readme.md","filePath":"readme.md"}'),l={name:"readme.md"};function n(o,a,r,h,p,d){return s(),i("div",null,a[0]||(a[0]=[t("",30)]))}const u=e(l,[["render",n]]);export{k as __pageData,u as default};
