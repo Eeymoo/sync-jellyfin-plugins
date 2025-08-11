@@ -34,10 +34,6 @@ async function runTranslation() {
             { 
                 path: './template/status.md',
                 outputDir: './docs/i18n'
-            },
-            { 
-                path: './template/README.md',
-                outputDir: './docs/i18n'
             }
         ];
 

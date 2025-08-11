@@ -1,214 +1,105 @@
-# sync-jellyfin-plugins
+# Jellyfin 插件镜像同步
 
 ## 项目简介
 
-`sync-jellyfin-plugins` 是一个专门为 Jellyfin 用户设计的插件同步仓库项目，**仅适用于中国大陆地区**。该项目旨在提供一个稳定、高效的插件同步服务，确保用户能够及时获取到最新的插件版本。
+为中国大陆地区的 Jellyfin 用户提供的插件镜像同步服务。本项目自动同步多个主流 Jellyfin 插件仓库，解决国内用户访问官方插件仓库速度慢或无法访问的问题。
 
+## 特性
 
-## 上游
+- 🔄 **自动同步**：每日 24:00 自动同步所有上游插件仓库
+- 📦 **版本管理**：保留每个插件的最新 3 个版本，确保稳定性
+- 🚀 **快速访问**：国内 CDN 加速，下载速度显著提升
+- 📊 **状态监控**：实时监控同步状态和成功率
+- 🛡️ **可靠性**：多仓库支持，降低单点故障风险
 
-镜像的基础上游同步地址是 [Plugins | Jellyfin](https://jellyfin.org/docs/general/server/plugins/#official-jellyfin-plugin-repositories) 获取的 `manifest.json` 中的地址，也有一些常用的例如 `Metashark` 等选取了官方仓库作为上游同步仓库。
+## 快速开始
 
-## 主要功能
+### 在 Jellyfin 中添加插件仓库
 
-- **每晚 24 点同步镜像仓库**：项目会在每天晚上 24 点自动同步 Jellyfin 插件仓库，确保插件库始终保持最新。
-  
-- **保留最新的 3 个版本**：为了节省存储空间并保持简洁，项目只保留每个插件的最新 3 个版本。
+1. 登录 Jellyfin 管理员界面
+2. 导航至 **控制台** → **插件** → **存储库**
+3. 点击 **添加** 按钮
+4. 输入仓库地址（从下方获取）
+5. 点击 **确定** 保存
 
-- **插件自动更新推荐时间**：建议将插件的自动更新时间调整为**晚上 2 点之后**，以避免与同步任务冲突，并确保插件更新时的网络稳定性。
+### 获取镜像地址
 
-## 如何添加其他同步内容
+访问状态页面获取最新的镜像地址：
 
-如果你需要同步其他插件仓库，可以通过合并代码到 `original-manifest-list.json` 文件来实现。该文件定义了需要同步的插件仓库列表。
+**🔗 [查看仓库状态和复制镜像链接](https://jellyfin-cn.eeymoo.com/status.html)**
 
-### 示例
+状态页面提供：
+- 📈 实时同步状态和成功率
+- 📋 一键复制镜像链接
+- 🔍 详细的错误信息和历史记录
+- 📊 仓库健康度监控
 
-以下是一个 `original-manifest-list.json` 文件的示例，展示了如何添加一个名为 "IntroSkipper's Repo" 的插件仓库：
+## 开发者指南
+
+### 添加新的同步仓库
+
+如需添加新的插件仓库到同步列表，请编辑 `original-manifest-list.json` 文件：
 
 ```json
 [
     {
-      "name": "IntroSkipper's Repo",
-      "repositoryUrl": "https://manifest.intro-skipper.org/manifest.json"
+        "name": "示例插件仓库",
+        "repositoryUrl": "https://example.com/manifest.json"
     }
 ]
 ```
 
-你可以根据需要添加更多的插件仓库到该列表中。
-
-## 使用说明
-
-### 1. 克隆仓库
-首先，克隆本项目到本地。
+### 本地部署
 
 ```bash
+# 克隆项目
 git clone https://github.com/Eeymoo/sync-jellyfin-plugins.git
+cd sync-jellyfin-plugins
+
+# 安装依赖
+npm install
+
+# 运行同步脚本
+npm run sync
 ```
 
-### 2. 添加自定义仓库
-如果需要同步其他插件仓库，编辑 `original-manifest-list.json` 文件，添加相应的仓库信息。
+## 支持的仓库
 
-### 3. 自动同步
-项目会每晚 24 点自动同步插件仓库，并保留最新的 3 个版本。
+本项目同步的上游仓库包括：
+- [Jellyfin 官方稳定版](https://jellyfin.org/docs/general/server/plugins/#official-jellyfin-plugin-repositories)
+- [Jellyfin 官方开发版](https://jellyfin.org/docs/general/server/plugins/#official-jellyfin-plugin-repositories)
+- 多个社区维护的第三方插件仓库
 
-### 4. 调整插件更新时间
-建议将 Jellyfin 的插件自动更新时间调整为晚上 2 点之后，以避免与同步任务冲突。
+完整列表和实时状态请查看[状态页面](https://jellyfin-cn.eeymoo.com/status.html)。
 
-### 5. 查看仓库状态和获取镜像链接
+## 常见问题
 
-本仓库支持多种插件 Repo 的同步。要查看当前同步状态、成功率以及获取镜像链接，请访问：
+### 无法添加仓库地址？
+- 确保 Jellyfin 服务器可以访问互联网
+- 检查防火墙设置是否阻止了外部连接
+- 尝试重启 Jellyfin 服务
 
-**🔗 [查看仓库状态和复制镜像链接](https://jellyfin-cn.eeymoo.com/status.html)**
+### 插件列表为空或不更新？
+- 等待几分钟让 Jellyfin 刷新插件列表
+- 在插件页面手动点击刷新按钮
+- 检查状态页面确认仓库同步正常
 
-在状态页面中，你可以：
-- 查看所有插件仓库的实时同步状态
-- 查看历史成功率和同步记录
-- 一键复制镜像链接到 Jellyfin 插件仓库设置中
-- 查看详细的错误信息（如果有的话）
-
-建议将获取到的镜像链接添加到 Jellyfin 的插件仓库设置中，以享受国内加速服务。
+### 插件下载速度慢？
+- 推荐使用本项目提供的镜像地址
+- 可以同时添加多个镜像源作为备用
 
 ## 贡献
 
-### 5. 支持 Repo 内容
-本仓库支持多种插件 Repo 的同步，以下是一些推荐的插件仓库及其 URL。你可以将以下 URL 添加到 Jellyfin 的插件仓库设置中，以使用这些 Repo 的插件：
+欢迎提交 Pull Request 来改进本项目！
 
+### 如何贡献
+- 🐛 报告 Bug 或提出功能建议
+- 🔧 提交代码修复或新功能
+- 📝 完善文档和使用指南
+- 🚀 推荐优质的插件仓库
 
-- **[Jellyfin](https://repo.jellyfin.org/files/plugin/manifest.json)** 2025/08/08 21:56 (北京时间)
-  - **标签**: `official`, `stable`
-  - **状态**: ❌ 失败
-  - **成功率**: 50%
-
-```
-https://repo.jellyfin.org/files/plugin/manifest.json
-```
-
-
-- **[Jellyfin Unstable](https://repo.jellyfin.org/files/plugin-unstable/manifest.json)** 2025/08/08 21:56 (北京时间)
-  - **标签**: `official`, `unstable`, `beta`
-  - **状态**: ❌ 失败
-  - **成功率**: 50%
-
-```
-https://repo.jellyfin.org/files/plugin-unstable/manifest.json
-```
-
-
-- **[9p4's Single-Sign-On (SSO) Repo](https://raw.githubusercontent.com/9p4/jellyfin-plugin-sso/manifest-release/manifest.json)** 2025/08/08 21:56 (北京时间)
-  - **标签**: `authentication`, `sso`, `third-party`
-  - **状态**: ✅ 成功
-  - **成功率**: 100%
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/9p4s_SingleSignOn_SSO_Repo/manifest.json
-```
-
-
-- **[Ani-Sync Repo](https://raw.githubusercontent.com/vosmiic/jellyfin-ani-sync/master/manifest.json)** 2025/08/08 21:56 (北京时间)
-  - **标签**: `anime`, `sync`, `metadata`, `third-party`, `official-community`
-  - **状态**: ✅ 成功
-  - **成功率**: 100%
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/AniSync_Repo/manifest.json
-```
-
-
-- **[danieladov's Repo](https://raw.githubusercontent.com/danieladov/JellyfinPluginManifest/master/manifest.json)** 2025/08/08 21:56 (北京时间)
-  - **标签**: `third-party`, `community`
-  - **状态**: ✅ 成功
-  - **成功率**: 100%
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/danieladovs_Repo/manifest.json
-```
-
-
-- **[dkanada's Repo](https://raw.githubusercontent.com/dkanada/jellyfin-plugin-intros/master/manifest.json)** 2025/08/08 21:56 (北京时间)
-  - **标签**: `intros`, `video`, `third-party`, `official-community`
-  - **状态**: ✅ 成功
-  - **成功率**: 100%
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/dkanadas_Repo/manifest.json
-```
-
-
-- **[k-matti's Repo](https://raw.githubusercontent.com/k-matti/jellyfin-plugin-repository/master/manifest.json)** 2025/08/08 21:56 (北京时间)
-  - **标签**: `third-party`, `community`
-  - **状态**: ✅ 成功
-  - **成功率**: 100%
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/kmattis_Repo/manifest.json
-```
-
-
-- **[LinFor's Repo](https://raw.githubusercontent.com/LinFor/jellyfin-plugin-kinopoisk/master/dist/manifest.json)** 2025/08/08 21:56 (北京时间)
-  - **标签**: `kinopoisk`, `metadata`, `russian`, `third-party`
-  - **状态**: ✅ 成功
-  - **成功率**: 100%
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/LinFors_Repo/manifest.json
-```
-
-
-- **[LizardByte's Repo](https://app.lizardbyte.dev/jellyfin-plugin-repo/manifest.json)** 2025/08/08 21:56 (北京时间)
-  - **标签**: `third-party`, `community`, `lizardbyte`
-  - **状态**: ✅ 成功
-  - **成功率**: 100%
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/LizardBytes_Repo/manifest.json
-```
-
-
-- **[ShokoAnime's Repo](https://raw.githubusercontent.com/ShokoAnime/Shokofin/metadata/stable/manifest.json)** 2025/08/08 21:56 (北京时间)
-  - **标签**: `anime`, `shoko`, `metadata`, `third-party`, `official-community`
-  - **状态**: ✅ 成功
-  - **成功率**: 100%
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/ShokoAnimes_Repo/manifest.json
-```
-
-
-- **[TubeArchivist's Repo](https://raw.githubusercontent.com/tubearchivist/tubearchivist-jf-plugin/master/manifest.json)** 2025/08/08 21:56 (北京时间)
-  - **标签**: `youtube`, `archival`, `tubearchivist`, `third-party`, `official-community`
-  - **状态**: ✅ 成功
-  - **成功率**: 100%
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/TubeArchivists_Repo/manifest.json
-```
-
-
-- **[IntroSkipper's Repo](https://manifest.intro-skipper.org/manifest.json)** 2025/08/08 21:56 (北京时间)
-  - **标签**: `intro-skipper`, `automation`, `third-party`, `official-community`
-  - **状态**: ❌ 失败
-  - **成功率**: 0%
-
-```
-https://manifest.intro-skipper.org/manifest.json
-```
-
-
-- **[Metashark' Repo](https://github.com/cxfksword/jellyfin-plugin-metashark/releases/download/manifest/manifest_cn.json)** 2025/08/08 21:56 (北京时间)
-  - **标签**: `metadata`, `chinese`, `third-party`
-  - **状态**: ✅ 成功
-  - **成功率**: 100%
-
-```
-https://jellyfin-mirror.oss-cn-wuhan-lr.aliyuncs.com/plugins/Metashark_Repo/manifest.json
-```
-
-
-根据需要，你可以添加更多支持的 Repo 到 Jellyfin 的插件仓库设置中。
-
-## 贡献
-
-欢迎提交 Pull Request 来改进本项目。如果你有任何问题或建议，请通过 Issues 页面进行反馈。
+### 提交 Issue
+如果你遇到任何问题或有建议，请在 [Issues 页面](https://github.com/Eeymoo/sync-jellyfin-plugins/issues) 反馈。
 
 ## 许可证
 
