@@ -47,7 +47,7 @@
     </div>
 
     <div class="status-history" v-if="parsedStatusHistory && parsedStatusHistory.length > 0">
-      <h4>最近状态 (最多60次) - 时间为北京时间</h4>
+      <h4>最近状态 (最近60次) - 时间为北京时间</h4>
       <div class="history-chart">
         <div
           v-for="(record, index) in parsedStatusHistory.slice(0, 60)"
