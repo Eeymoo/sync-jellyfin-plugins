@@ -1,0 +1,28 @@
+{
+  "name": "sync-jellyfin-plugins-tests",
+  "version": "1.0.0",
+  "description": "测试套件配置",
+  "scripts": {
+    "test": "jest --verbose",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:version": "node test/version-logic.test.js",
+    "test:config": "node test/config.test.js", 
+    "test:node": "node test/node.test.js",
+    "test:duplicate": "node test/duplicate-prevention.test.js",
+    "test:translation": "node test/translation.test.js"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/test/**/*.test.js"
+    ],
+    "verbose": true,
+    "collectCoverageFrom": [
+      "scripts/**/*.js",
+      "*.js",
+      "!test/**",
+      "!node_modules/**"
+    ]
+  }
+}
