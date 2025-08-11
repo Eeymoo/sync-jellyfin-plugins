@@ -13,6 +13,7 @@
     </div>
     
     <div class="repo-url">
+      <label class="url-label">默认镜像:</label>
       <code class="url-code">{{ repositoryUrl || originalUrl }}</code>
       <button
         @click="copyToClipboard(repositoryUrl || originalUrl)"
@@ -23,6 +24,36 @@
       </button>
     </div>
     
+    <!-- 版本特定链接 -->
+    <div v-if="parsedVersionUrls && Object.keys(parsedVersionUrls).length > 0" class="version-section">
+      <details class="version-details">
+        <summary class="version-summary">查看不同 Jellyfin 版本的链接</summary>
+        <div class="version-content">
+          <div v-for="(urls, version) in parsedVersionUrls" :key="version" class="version-item">
+            <div class="version-header">
+              <div class="version-info">
+                <strong>{{ urls.title || `Jellyfin ${version}` }}</strong>
+                <span class="version-desc">{{ urls.description }}</span>
+              </div>
+              <code class="curl-example">curl -A "Jellyfin-Server/{{ version }}" {{ originalUrl }} -L</code>
+            </div>
+            <div class="version-links">
+              <div class="version-link">
+                <span class="link-type">翻译版:</span>
+                <code class="url-code-small">{{ urls.translated }}</code>
+                <button @click="copyToClipboard(urls.translated)" class="copy-btn-small">复制</button>
+              </div>
+              <div class="version-link">
+                <span class="link-type">原始版:</span>
+                <code class="url-code-small">{{ urls.original }}</code>
+                <button @click="copyToClipboard(urls.original)" class="copy-btn-small">复制</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+    
     <div class="repo-stats">
       <span class="success-rate">成功率: {{ successRate }}%</span>
       <span class="last-update">{{ formatDate(timestamp) }} (北京时间)</span>
@@ -31,13 +62,25 @@
 </template>
 
 <script setup>
-defineProps({
+import { computed } from 'vue'
+
+const props = defineProps({
   name: String,
   originalUrl: String,
   repositoryUrl: String,
   timestamp: String,
   status: String,
-  successRate: Number
+  successRate: Number,
+  versionUrls: String
+})
+
+const parsedVersionUrls = computed(() => {
+  try {
+    return props.versionUrls ? JSON.parse(props.versionUrls) : {}
+  } catch (e) {
+    console.warn('Failed to parse versionUrls:', e)
+    return {}
+  }
 })
 
 const formatDate = (timestamp) => {
@@ -129,7 +172,15 @@ const copyToClipboard = async (text) => {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.url-label {
+  font-size: 12px;
+  color: #718096;
+  font-weight: 500;
+  min-width: 70px;
 }
 
 .url-code {
@@ -142,6 +193,7 @@ const copyToClipboard = async (text) => {
   font-family: 'Courier New', monospace;
   color: #4a5568;
   word-break: break-all;
+  min-width: 200px;
 }
 
 .copy-btn {
@@ -157,6 +209,120 @@ const copyToClipboard = async (text) => {
 
 .copy-btn:hover {
   background: #2c5282;
+}
+
+.version-section {
+  margin-top: 15px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 10px;
+}
+
+.version-details {
+  margin: 0;
+}
+
+.version-summary {
+  cursor: pointer;
+  font-size: 13px;
+  color: #4a5568;
+  font-weight: 500;
+  padding: 5px 0;
+  user-select: none;
+}
+
+.version-summary:hover {
+  color: #2d3748;
+}
+
+.version-content {
+  margin-top: 10px;
+}
+
+.version-item {
+  margin-bottom: 15px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+
+.version-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.version-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.version-desc {
+  font-size: 11px;
+  color: #6c757d;
+  font-weight: normal;
+  line-height: 1.3;
+}
+
+.curl-example {
+  font-size: 10px;
+  color: #6c757d;
+  background: #ffffff;
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid #dee2e6;
+}
+
+.version-links {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.version-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.link-type {
+  font-size: 11px;
+  color: #6c757d;
+  min-width: 50px;
+  font-weight: 500;
+}
+
+.url-code-small {
+  flex: 1;
+  padding: 4px 6px;
+  background: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 3px;
+  font-size: 10px;
+  font-family: 'Courier New', monospace;
+  color: #495057;
+  word-break: break-all;
+  min-width: 150px;
+}
+
+.copy-btn-small {
+  padding: 4px 6px;
+  background: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 10px;
+  transition: background 0.2s ease;
+}
+
+.copy-btn-small:hover {
+  background: #495057;
 }
 
 .repo-stats {

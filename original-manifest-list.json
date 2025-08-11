@@ -2,12 +2,28 @@
   {
     "name": "Jellyfin",
     "repositoryUrl": "https://repo.jellyfin.org/files/plugin/manifest.json",
-    "tags": ["official", "stable"]
+    "tags": ["official", "stable"],
+    "versions": {
+      "10.10.7": {
+        "title": "稳定版本 (Jellyfin 10.10.7)",
+        "description": "适用于 Jellyfin 10.10.7 的稳定插件版本"
+      },
+      "10.11": {
+        "title": "最新版本 (Jellyfin 10.11+)",
+        "description": "适用于 Jellyfin 10.11 及更高版本的最新插件"
+      }
+    }
   },
   {
     "name": "Jellyfin Unstable",
     "repositoryUrl": "https://repo.jellyfin.org/files/plugin-unstable/manifest.json",
-    "tags": ["official", "unstable", "beta"]
+    "tags": ["official", "unstable", "beta"],
+    "versions": {
+      "10.11": {
+        "title": "开发版本 (Jellyfin 10.11+)",
+        "description": "适用于 Jellyfin 10.11+ 的开发版插件，包含最新功能但可能不稳定"
+      }
+    }
   },
   {
     "name": "9p4's Single-Sign-On (SSO) Repo",
@@ -56,8 +72,18 @@
   },
   {
     "name": "IntroSkipper's Repo",
-    "repositoryUrl": "https://intro-skipper.org/manifest.json",
-    "tags": ["intro-skipper", "automation", "third-party", "official-community"]
+    "repositoryUrl": "https://manifest.intro-skipper.org/manifest.json",
+    "tags": ["intro-skipper", "automation", "third-party", "official-community"],
+    "versions": {
+      "10.10.7": {
+        "title": "最新版本 (Jellyfin 10.10.7)",
+        "description": "适用于 Jellyfin 10.10.7 的 IntroSkipper 插件"
+      },
+      "10.11": {
+        "title": "预览版本 (Jellyfin 10.11+)",
+        "description": "适用于 Jellyfin 10.11+ 的 IntroSkipper 插件，包含性能优化和新功能"
+      }
+    }
   },
   {
     "name": "Metashark' Repo",

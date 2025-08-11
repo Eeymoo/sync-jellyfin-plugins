@@ -148,46 +148,102 @@ async function processManifestItem(item, existingItem = null) {
 
     const itemName = formatName(item.name);
 
+    // 从配置中获取支持的版本，如果没有配置则使用默认版本
+    const supportedVersions = item.versions || { "10.11": { title: "默认版本", description: "标准插件版本" } };
+    const versions = Object.keys(supportedVersions);
+
     // 封装一次真正的处理尝试
     const attemptProcess = async () => {
-        const response = await axios.get(item.repositoryUrl);
-        const projects = response.data;
-        const resultProjects = [];
+        const manifestsByVersion = {};
+        
+        for (const version of versions) {
+            try {
+                const headers = { 'User-Agent': `Jellyfin-Server/${version}` };
+                const response = await axios.get(item.repositoryUrl, { headers });
+                manifestsByVersion[version] = response.data;
+                console.log(`[${item.name}] 成功获取 Jellyfin ${version} 版本的 manifest`);
+            } catch (error) {
+                console.warn(`[${item.name}] 获取 Jellyfin ${version} manifest 失败:`, error.message);
+                // 如果某个版本失败，使用默认请求
+                try {
+                    const response = await axios.get(item.repositoryUrl);
+                    manifestsByVersion[version] = response.data;
+                    console.log(`[${item.name}] 使用默认请求获取 Jellyfin ${version} 的 manifest`);
+                } catch (fallbackError) {
+                    console.error(`[${item.name}] 默认请求也失败:`, fallbackError.message);
+                    throw fallbackError;
+                }
+            }
+        }
+        
+        // 处理每个版本的 manifest
         const downloadDirPath = path.join(downloadDir, itemName);
         ensureDir(downloadDirPath);
-        for (const project of projects) {
-            const recentVersions = project.versions
-                .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-                .slice(0, 3);
-            const resultVersions = [];
-            for (const version of recentVersions) {
-                const fileName = path.basename(version.sourceUrl);
-                const localFilePath = path.join(downloadDir, itemName, fileName);
-                await downloadFile(version.sourceUrl, localFilePath);
-                const ossKey = `plugins/${itemName}/${fileName}`;
-                await uploadFileToOSS(localFilePath, ossKey);
-                resultVersions.push({
-                    ...version,
-                    sourceUrl: `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/${ossKey}`
+        
+        for (const [version, projects] of Object.entries(manifestsByVersion)) {
+            const versionInfo = supportedVersions[version];
+            console.log(`[${item.name}] 处理版本: ${version} - ${versionInfo.title}`);
+            
+            const resultProjects = [];
+            
+            for (const project of projects) {
+                const recentVersions = project.versions
+                    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+                    .slice(0, 3);
+                const resultVersions = [];
+                for (const projectVersion of recentVersions) {
+                    const fileName = path.basename(projectVersion.sourceUrl);
+                    const localFilePath = path.join(downloadDir, itemName, fileName);
+                    await downloadFile(projectVersion.sourceUrl, localFilePath);
+                    const ossKey = `plugins/${itemName}/${fileName}`;
+                    await uploadFileToOSS(localFilePath, ossKey);
+                    resultVersions.push({
+                        ...projectVersion,
+                        sourceUrl: `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/${ossKey}`
+                    });
+                }
+                resultProjects.push({
+                    ...project,
+                    versions: resultVersions
                 });
             }
-            resultProjects.push({
-                ...project,
-                versions: resultVersions
-            });
+            
+            // 为每个 Jellyfin 版本保存不同的 manifest 文件
+            const originalProjects = JSON.parse(JSON.stringify(resultProjects));
+            const translatedProjects = await translateProjectData(resultProjects);
+            
+            // 原始版本文件
+            const originalFilePath = path.join(downloadDir, itemName, `manifest-original-${version}.json`);
+            const originalOssKey = `plugins/${itemName}/manifest-original-${version}.json`;
+            fs.writeFileSync(originalFilePath, JSON.stringify(originalProjects, null, 2));
+            await uploadFileToOSS(originalFilePath, originalOssKey);
+            
+            // 翻译版本文件
+            const translatedFilePath = path.join(downloadDir, itemName, `manifest-${version}.json`);
+            const translatedOssKey = `plugins/${itemName}/manifest-${version}.json`;
+            fs.writeFileSync(translatedFilePath, JSON.stringify(translatedProjects, null, 2));
+            await uploadFileToOSS(translatedFilePath, translatedOssKey);
         }
-        const originalProjects = JSON.parse(JSON.stringify(resultProjects));
-        const translatedProjects = await translateProjectData(resultProjects);
-        const originalFilePath = path.join(downloadDir, itemName, 'manifest-original.json');
-        const originalOssKey = `plugins/${itemName}/manifest-original.json`;
-        fs.writeFileSync(originalFilePath, JSON.stringify(originalProjects, null, 2));
-        await uploadFileToOSS(originalFilePath, originalOssKey);
-        const translatedFilePath = path.join(downloadDir, itemName, 'manifest.json');
-        const translatedOssKey = `plugins/${itemName}/manifest.json`;
-        fs.writeFileSync(translatedFilePath, JSON.stringify(translatedProjects, null, 2));
-        await uploadFileToOSS(translatedFilePath, translatedOssKey);
-        result.repositoryUrl = `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/${translatedOssKey}`;
-        result.originalRepositoryUrl = `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/${originalOssKey}`;
+        
+        // 获取默认版本
+        const defaultVersion = versions.includes('10.11') ? '10.11' : versions[0];
+        
+        // 默认使用配置的首选版本作为主要访问地址
+        result.repositoryUrl = `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/plugins/${itemName}/manifest-${defaultVersion}.json`;
+        result.originalRepositoryUrl = `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/plugins/${itemName}/manifest-original-${defaultVersion}.json`;
+        
+        // 保存版本信息，包含版本配置
+        result.versionUrls = {};
+        for (const version of versions) {
+            const versionInfo = supportedVersions[version];
+            result.versionUrls[version] = {
+                translated: `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/plugins/${itemName}/manifest-${version}.json`,
+                original: `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/plugins/${itemName}/manifest-original-${version}.json`,
+                title: versionInfo.title,
+                description: versionInfo.description
+            };
+        }
+        
         result.status = 'success';
     };
 
@@ -330,6 +386,7 @@ async function processManifest() {
         tags: item.tags || [],
         statusHistory: item.statusHistory || [],
         successRate: calculateSuccessRate(item.statusHistory),
+        versionUrls: item.versionUrls || {},
         lastError: item.statusHistory && item.statusHistory.length > 0 && item.statusHistory[0].status === 'error' 
             ? item.statusHistory[0].error 
             : null
@@ -424,6 +481,7 @@ function generateRepoItemContent(repositoryStatusData) {
   timestamp="${escapeString(repo.timestamp)}"
   status="${escapeString(repo.status)}"
   :successRate="${repo.successRate || 0}"
+  versionUrls="${escapeString(JSON.stringify(repo.versionUrls || {}))}"
 />`;
     }).join('\n');
 
@@ -447,6 +505,7 @@ function generateRepositoryItemContent(repositoryStatusData) {
   tags="${escapeString(JSON.stringify(repo.tags || []))}"
   statusHistory="${escapeString(JSON.stringify(repo.statusHistory || []))}"
   lastError="${escapeString(repo.lastError || '')}"
+  versionUrls="${escapeString(JSON.stringify(repo.versionUrls || {}))}"
 />`;
     }).join('\n');
 

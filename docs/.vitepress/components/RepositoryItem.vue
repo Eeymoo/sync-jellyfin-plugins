@@ -31,7 +31,10 @@
 
     <div class="repo-info">
       <p class="last-update">最后更新: {{ formatDate(timestamp) }} (北京时间)</p>
+      
+      <!-- 默认镜像 URL -->
       <div class="repo-url">
+        <label class="url-label">默认镜像 (Jellyfin 10.11+):</label>
         <input
           :value="repositoryUrl || originalUrl"
           readonly
@@ -43,6 +46,50 @@
         >
           复制
         </button>
+      </div>
+      
+      <!-- 不同版本的链接 -->
+      <div v-if="parsedVersionUrls && Object.keys(parsedVersionUrls).length > 0" class="version-urls">
+        <h4 class="version-title">按 Jellyfin 版本访问:</h4>
+        <div v-for="(urls, version) in parsedVersionUrls" :key="version" class="version-group">
+          <div class="version-header">
+            <div class="version-info">
+              <span class="version-name">{{ urls.title || `Jellyfin ${version}` }}</span>
+              <span class="version-description">{{ urls.description }}</span>
+            </div>
+            <span class="version-curl">curl -A "Jellyfin-Server/{{ version }}" {{ originalUrl }} -L</span>
+          </div>
+          <div class="version-links">
+            <div class="version-url">
+              <label class="url-label">翻译版本:</label>
+              <input
+                :value="urls.translated"
+                readonly
+                class="url-input"
+              />
+              <button
+                @click="copyToClipboard(urls.translated)"
+                class="copy-btn copy-btn-small"
+              >
+                复制
+              </button>
+            </div>
+            <div class="version-url">
+              <label class="url-label">原始版本:</label>
+              <input
+                :value="urls.original"
+                readonly
+                class="url-input"
+              />
+              <button
+                @click="copyToClipboard(urls.original)"
+                class="copy-btn copy-btn-small"
+              >
+                复制
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -86,7 +133,8 @@ const props = defineProps({
   successRate: Number,
   tags: String,
   statusHistory: String,
-  lastError: String
+  lastError: String,
+  versionUrls: String
 })
 
 // 解析 JSON 字符串为数组
@@ -96,6 +144,15 @@ const parsedTags = computed(() => {
   } catch (e) {
     console.warn('Failed to parse tags:', e)
     return []
+  }
+})
+
+const parsedVersionUrls = computed(() => {
+  try {
+    return props.versionUrls ? JSON.parse(props.versionUrls) : {}
+  } catch (e) {
+    console.warn('Failed to parse versionUrls:', e)
+    return {}
   }
 })
 
@@ -322,6 +379,110 @@ const calculateSuccessRate = (history) => {
   justify-content: space-between;
   font-size: 12px;
   color: #718096;
+}
+
+.version-urls {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.version-title {
+  margin: 0 0 15px 0;
+  font-size: 16px;
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.version-group {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.version-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.version-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.version-name {
+  font-weight: 600;
+  color: #495057;
+  font-size: 14px;
+}
+
+.version-description {
+  font-size: 12px;
+  color: #6c757d;
+  line-height: 1.4;
+}
+
+.version-curl {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 11px;
+  color: #6c757d;
+  background: #ffffff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+}
+
+.version-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.version-url {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.url-label {
+  font-size: 12px;
+  color: #6c757d;
+  min-width: 80px;
+  font-weight: 500;
+}
+
+.copy-btn-small {
+  padding: 6px 12px;
+  font-size: 11px;
+}
+
+@media (max-width: 768px) {
+  .version-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .version-curl {
+    word-break: break-all;
+    font-size: 10px;
+  }
+  
+  .version-url {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 5px;
+  }
+  
+  .url-label {
+    min-width: auto;
+  }
 }
 
 .success-rate {
