@@ -32,6 +32,11 @@ function ensureDir(downloadDir) {
     }
 }
 
+// 简单 sleep 工具
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 /**
  * Downloads a file from a given URL and saves it to the specified path.
  * Displays a progress bar during the download process.
@@ -143,14 +148,13 @@ async function processManifestItem(item, existingItem = null) {
 
     const itemName = formatName(item.name);
 
-    try {
+    // 封装一次真正的处理尝试
+    const attemptProcess = async () => {
         const response = await axios.get(item.repositoryUrl);
         const projects = response.data;
         const resultProjects = [];
         const downloadDirPath = path.join(downloadDir, itemName);
-
         ensureDir(downloadDirPath);
-
         for (const project of projects) {
             const recentVersions = project.versions
                 .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
@@ -159,87 +163,118 @@ async function processManifestItem(item, existingItem = null) {
             for (const version of recentVersions) {
                 const fileName = path.basename(version.sourceUrl);
                 const localFilePath = path.join(downloadDir, itemName, fileName);
-
                 await downloadFile(version.sourceUrl, localFilePath);
-
                 const ossKey = `plugins/${itemName}/${fileName}`;
                 await uploadFileToOSS(localFilePath, ossKey);
                 resultVersions.push({
                     ...version,
                     sourceUrl: `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/${ossKey}`
-                })
+                });
             }
             resultProjects.push({
                 ...project,
                 versions: resultVersions
-            })
+            });
         }
-
-        // 保存原始版本（未翻译）
         const originalProjects = JSON.parse(JSON.stringify(resultProjects));
-        
-        // 翻译插件数据
         const translatedProjects = await translateProjectData(resultProjects);
-
-        // 上传原始版本
         const originalFilePath = path.join(downloadDir, itemName, 'manifest-original.json');
         const originalOssKey = `plugins/${itemName}/manifest-original.json`;
         fs.writeFileSync(originalFilePath, JSON.stringify(originalProjects, null, 2));
         await uploadFileToOSS(originalFilePath, originalOssKey);
-        
-        // 上传翻译版本
         const translatedFilePath = path.join(downloadDir, itemName, 'manifest.json');
         const translatedOssKey = `plugins/${itemName}/manifest.json`;
         fs.writeFileSync(translatedFilePath, JSON.stringify(translatedProjects, null, 2));
         await uploadFileToOSS(translatedFilePath, translatedOssKey);
-        
         result.repositoryUrl = `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/${translatedOssKey}`;
         result.originalRepositoryUrl = `https://${OSS_BUCKET_NAME}.${OSS_ENDPOINT}.aliyuncs.com/${originalOssKey}`;
         result.status = 'success';
+    };
 
-    } catch (error) {
-        console.error(`Error processing ${item.name}:`, error.message);
-        
-        // 生成更友好的错误信息
-        let friendlyErrorMessage = '';
+    const firstRetryDelays = [30000, 60000, 120000]; // 30s / 60s / 120s
+    const finalRetryDelays = [30000, 60000, 120000]; // 最后再 3 次
+
+    let lastError = null;
+
+    const buildFriendlyMessage = (error) => {
+        if (!error) return '';
         if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
-            friendlyErrorMessage = '网络连接失败，无法访问目标地址';
+            return '网络连接失败，无法访问目标地址';
         } else if (error.response?.status === 404) {
-            friendlyErrorMessage = '目标文件不存在 (404)';
+            return '目标文件不存在 (404)';
         } else if (error.response?.status === 403) {
-            friendlyErrorMessage = '访问被拒绝 (403)';
+            return '访问被拒绝 (403)';
         } else if (error.response?.status === 500) {
-            friendlyErrorMessage = '服务器内部错误 (500)';
+            return '服务器内部错误 (500)';
         } else if (error.response?.status >= 400 && error.response?.status < 500) {
-            friendlyErrorMessage = `客户端错误 (${error.response.status})`;
+            return `客户端错误 (${error.response.status})`;
         } else if (error.response?.status >= 500) {
-            friendlyErrorMessage = `服务器错误 (${error.response.status})`;
-        } else if (error.message.includes('timeout')) {
-            friendlyErrorMessage = '请求超时，网络连接不稳定';
-        } else if (error.message.includes('JSON')) {
-            friendlyErrorMessage = '响应数据格式错误，无法解析';
-        } else if (error.message.includes('certificate')) {
-            friendlyErrorMessage = 'SSL证书验证失败';
+            return `服务器错误 (${error.response.status})`;
+        } else if (error.message?.includes('timeout')) {
+            return '请求超时，网络连接不稳定';
+        } else if (error.message?.includes('JSON')) {
+            return '响应数据格式错误，无法解析';
+        } else if (error.message?.includes('certificate')) {
+            return 'SSL证书验证失败';
         } else {
-            friendlyErrorMessage = `未知错误: ${error.message}`;
+            return `未知错误: ${error.message}`;
         }
-        
-        result.errorMessage = friendlyErrorMessage;
+    };
+
+    const runAttempt = async (phase, idx, total) => {
+        try {
+            console.log(`[${item.name}] 尝试(${phase}) ${idx+1}/${total}`);
+            await attemptProcess();
+            console.log(`[${item.name}] 成功 (${phase}) 尝试 ${idx+1}`);
+            return true;
+        } catch (err) {
+            lastError = err;
+            console.warn(`[${item.name}] 失败 (${phase}) 尝试 ${idx+1}: ${err.message}`);
+            return false;
+        }
+    };
+
+    // 初始尝试
+    let success = await runAttempt('初始', 0, 1);
+
+    // 第一组重试
+    if (!success) {
+        for (let i = 0; i < firstRetryDelays.length && !success; i++) {
+            const delay = firstRetryDelays[i];
+            console.log(`[${item.name}] ${delay/1000}s 后进行第 ${i+1} 次重试`);
+            await sleep(delay);
+            success = await runAttempt('第一组重试', i+1, firstRetryDelays.length);
+        }
     }
 
-    // Update status history - keep last 60 records
+    // 最后一组重试
+    if (!success) {
+        console.log(`[${item.name}] 第一组全部失败，进入最后一组重试`);
+        for (let i = 0; i < finalRetryDelays.length && !success; i++) {
+            const delay = finalRetryDelays[i];
+            console.log(`[${item.name}] 最终重试：${delay/1000}s 后进行第 ${i+1} 次尝试`);
+            await sleep(delay);
+            success = await runAttempt('最后一组重试', i+1, finalRetryDelays.length);
+        }
+    }
+
+    if (!success) {
+        const friendlyErrorMessage = buildFriendlyMessage(lastError || {});
+        result.errorMessage = friendlyErrorMessage;
+        result.status = 'error';
+        console.error(`Error processing ${item.name}: ${friendlyErrorMessage}`);
+    }
+
+    // 只记录一次最终结果
     const statusRecord = {
         timestamp: result.timestamp,
         status: result.status,
         error: result.status === 'error' ? result.errorMessage : null
     };
-    
     result.statusHistory.unshift(statusRecord);
     if (result.statusHistory.length > 60) {
         result.statusHistory = result.statusHistory.slice(0, 60);
     }
-
-    // Remove temporary error message from result
     delete result.errorMessage;
 
     return result;
