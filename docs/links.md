@@ -2,6 +2,10 @@
 
 # 相关链接
 
+## My Blog
+
+[Eeymoo' Blog](https://blog.eeymoo.com/)
+
 ## 官方资源
 
 ### 🏠 Jellyfin 官网
@@ -75,47 +79,6 @@
 - **网址**: [https://www.aliyun.com/product/oss](https://www.aliyun.com/product/oss)
 - **介绍**: 对象存储服务，提供稳定的文件存储和 CDN 加速
 - **推荐理由**: 本项目使用的文件存储和 CDN 加速服务
-
-## 监控与分析
-
-### 📊 项目状态监控
-- **实时状态**: [仓库状态页面](/status)
-- **功能**: 监控同步状态、成功率、错误日志
-- **更新频率**: 实时更新
-
-### 📈 性能分析
-- **下载速度**: 国内 CDN 节点优化
-- **可用性**: 99.9% 服务可用性保障
-- **监控指标**: 响应时间、错误率、流量统计
-
-## 社区资源
-
-### 💬 Jellyfin 社区论坛
-- **网址**: [https://forum.jellyfin.org/](https://forum.jellyfin.org/)
-- **介绍**: Jellyfin 官方社区论坛
-- **推荐理由**: 获取帮助、分享经验、参与讨论
-
-### 📱 Jellyfin Reddit
-- **网址**: [https://www.reddit.com/r/jellyfin/](https://www.reddit.com/r/jellyfin/)
-- **介绍**: Jellyfin Reddit 社区
-- **推荐理由**: 活跃的英文社区，获取最新资讯和用户经验分享
-
-### 🇨🇳 中文社区资源
-- **QQ 群**: 搜索 "Jellyfin 中文"
-- **微信群**: 通过 QQ 群获取邀请链接
-- **推荐理由**: 中文用户交流经验、解决问题的主要平台
-
-### 🛠️ 实用工具
-
-### 🔧 配置助手
-- **Jellyfin 向导**: 新手配置指南
-- **插件推荐**: 基于使用场景的插件推荐
-- **故障诊断**: 常见问题自助解决方案
-
-### 📱 移动应用
-- **官方客户端**: 支持 iOS、Android、Windows、macOS
-- **第三方客户端**: Finamp（音乐）、Findroid（Android）等
-- **推荐理由**: 多平台支持，随时随地访问媒体内容
 
 ---
 
