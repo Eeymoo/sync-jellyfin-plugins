@@ -16,6 +16,7 @@ jobs:
   build:
 
     env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
       OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
       BAIDU_TRANSLATE_APPID: ${{ secrets.BAIDU_TRANSLATE_APPID }}
@@ -32,7 +33,7 @@ jobs:
     - name: Set up Node.js (latest)
       uses: actions/setup-node@v4
       with:
-        node-version: 'latest'  # 使用最新的 Node.js 版本
+        node-version: '24'  # 固定为 Node.js 24，避免 latest 漂移
 
     - name: Install pnpm
       run: npm install -g pnpm
