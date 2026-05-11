@@ -33,13 +33,13 @@ jobs:
     - name: Set up Node.js (latest)
       uses: actions/setup-node@v6
       with:
-        node-version: 'latest'  # 固定为 Node.js 24，避免 latest 漂移
+        node-version: 'latest'  # 固定为 Node.js latest，避免 latest 漂移
 
     - name: Install pnpm
       run: npm install -g pnpm
 
     - name: Install dependencies
-      run: pnpm install
+      run: pnpm install --allow-build=esbuild
 
     - name: Run sync script
       run: pnpm run sync
