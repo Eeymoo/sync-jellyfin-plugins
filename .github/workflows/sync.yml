@@ -28,12 +28,12 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Set up Node.js (latest)
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v6
       with:
-        node-version: '24'  # 固定为 Node.js 24，避免 latest 漂移
+        node-version: 'latest'  # 固定为 Node.js 24，避免 latest 漂移
 
     - name: Install pnpm
       run: npm install -g pnpm
@@ -70,5 +70,9 @@ jobs:
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
         git add .
-        git commit -m "action: automated sync commit"
-        git push origin master
+        if git diff --cached --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "action: automated sync commit"
+          git push origin master
+        fi
