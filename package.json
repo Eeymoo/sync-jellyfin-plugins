@@ -32,5 +32,10 @@
   },
   "devDependencies": {
     "vitepress": "^1.6.4"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
