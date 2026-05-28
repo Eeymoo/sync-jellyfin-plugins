@@ -1,0 +1,1 @@
+import{_ as r,H as l,f as t,i as a}from"./chunks/framework.DLd0CbzH.js";const f=JSON.parse('{"title":"相关链接","description":"","frontmatter":{},"headers":[],"relativePath":"links.md","filePath":"links.md"}'),i={name:"links.md"};function o(s,e,n,h,g,u){return l(),t("div",null,[...e[0]||(e[0]=[a("",36)])])}const b=r(i,[["render",o]]);export{f as __pageData,b as default};
