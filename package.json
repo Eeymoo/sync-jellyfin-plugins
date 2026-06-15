@@ -4,21 +4,21 @@
   "description": "",
   "main": "scripts/sync.js",
   "scripts": {
-    "sync": "node ./scripts/sync.js",
-    "translate": "node translate.js",
-    "translate-plugin-data": "node translate-plugin-data.js",
-    "test-translation": "node test-translation.js",
-    "test-duplicate-prevention": "node test-duplicate-prevention.js",
-    "demo-dual-files": "node demo-dual-files.js",
+    "sync": "bun ./scripts/sync.js",
+    "translate": "bun translate.js",
+    "translate-plugin-data": "bun translate-plugin-data.js",
+    "test-translation": "bun test-translation.js",
+    "test-duplicate-prevention": "bun test-duplicate-prevention.js",
+    "demo-dual-files": "bun demo-dual-files.js",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
-    "test": "node test/run-tests.js",
-    "test:node": "node test/node.test.js",
-    "test:config": "node test/config.test.js",
-    "test:version": "node test/version-logic.test.js",
-    "test:duplicate": "node test/duplicate-prevention.test.js",
-    "test:translation": "node test/translation.test.js"
+    "test": "bun test/run-tests.js",
+    "test:node": "bun test/node.test.js",
+    "test:config": "bun test/config.test.js",
+    "test:version": "bun test/version-logic.test.js",
+    "test:duplicate": "bun test/duplicate-prevention.test.js",
+    "test:translation": "bun test/translation.test.js"
   },
   "keywords": [],
   "author": "",
@@ -33,9 +33,7 @@
   "devDependencies": {
     "vitepress": "^1.6.4"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
-  }
+  "trustedDependencies": [
+    "esbuild"
+  ]
 }

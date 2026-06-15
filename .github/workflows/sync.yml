@@ -16,7 +16,6 @@ jobs:
   build:
 
     env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
       OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
       BAIDU_TRANSLATE_APPID: ${{ secrets.BAIDU_TRANSLATE_APPID }}
@@ -30,19 +29,16 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v6
 
-    - name: Set up Node.js (latest)
-      uses: actions/setup-node@v6
+    - name: Set up Bun
+      uses: oven-sh/setup-bun@v2
       with:
-        node-version: 'latest'  # 固定为 Node.js latest，避免 latest 漂移
-
-    - name: Install pnpm
-      run: npm install -g pnpm
+        bun-version: latest
 
     - name: Install dependencies
-      run: pnpm install
+      run: bun install
 
     - name: Run sync script
-      run: pnpm run sync
+      run: bun run sync
 
     - name: 查看生成的文件内容
       run: |
@@ -56,7 +52,7 @@ jobs:
 
     # 生成文档
     - name: Build Docs
-      run: pnpm run docs:build
+      run: bun run docs:build
 
     # 部署到 GitHub Pages
     - name: Deploy Docs to GitHub Pages
