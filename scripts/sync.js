@@ -193,18 +193,30 @@ async function processManifestItem(item, existingItem = null) {
 
         if (hasVersionConfig) {
             for (const version of versions) {
-                const headers = { 'User-Agent': `Jellyfin-Server/${version}` };
+                const versionInfo = supportedVersions[version];
+                // 支持通过 userAgentVersion 指定请求上游时使用的版本号
+                // 某些仓库（如 IntroSkipper）要求 User-Agent 携带完整的 x.y.z 版本号
+                const uaVersion = versionInfo.userAgentVersion || version;
+                const headers = { 'User-Agent': `Jellyfin-Server/${uaVersion}` };
                 try {
                     const response = await fetch(item.repositoryUrl, { headers });
                     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                    manifestsByVersion[version] = await response.json();
-                    console.log(`[${item.name}] 成功获取 Jellyfin ${version} 版本的 manifest`);
+                    const text = await response.text();
+                    if (!text || !text.trim()) {
+                        throw new Error(`上游返回空内容（可能 User-Agent 版本号 ${uaVersion} 不被支持）`);
+                    }
+                    manifestsByVersion[version] = JSON.parse(text);
+                    console.log(`[${item.name}] 成功获取 Jellyfin ${version} 版本的 manifest (UA: ${uaVersion})`);
                 } catch (error) {
                     console.warn(`[${item.name}] 获取 Jellyfin ${version} manifest 失败: ${error.message}`);
                     // 某个版本失败时使用默认请求兜底
                     const response = await fetch(item.repositoryUrl);
                     if (!response.ok) throw new Error(`默认请求也失败 HTTP ${response.status}`);
-                    manifestsByVersion[version] = await response.json();
+                    const fallbackText = await response.text();
+                    if (!fallbackText || !fallbackText.trim()) {
+                        throw new Error(`默认请求返回空内容`);
+                    }
+                    manifestsByVersion[version] = JSON.parse(fallbackText);
                     console.log(`[${item.name}] 使用默认请求获取 Jellyfin ${version} 的 manifest`);
                 }
             }
@@ -212,13 +224,20 @@ async function processManifestItem(item, existingItem = null) {
             console.log(`[${item.name}] 没有版本配置，使用原始方式获取 manifest`);
             const response = await fetch(item.repositoryUrl);
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            manifestsByVersion['default'] = await response.json();
+            const text = await response.text();
+            if (!text || !text.trim()) {
+                throw new Error(`上游返回空内容`);
+            }
+            manifestsByVersion['default'] = JSON.parse(text);
         }
 
         const downloadDirPath = path.join(downloadDir, itemName);
         ensureDir(downloadDirPath);
 
         for (const [version, projects] of Object.entries(manifestsByVersion)) {
+            if (!Array.isArray(projects)) {
+                throw new Error(`版本 ${version} 的 manifest 不是有效的插件数组`);
+            }
             if (hasVersionConfig) {
                 const versionInfo = supportedVersions[version];
                 console.log(`[${item.name}] 处理版本: ${version} - ${versionInfo.title}`);
@@ -229,9 +248,10 @@ async function processManifestItem(item, existingItem = null) {
             const resultProjects = [];
 
             for (const project of projects) {
-                const recentVersions = project.versions
+                const recentVersions = (project.versions || [])
+                    .slice()
                     .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-                    .slice(0, 3);
+                    .slice(0, 5);
                 const resultVersions = [];
 
                 for (const projectVersion of recentVersions) {
@@ -276,7 +296,23 @@ async function processManifestItem(item, existingItem = null) {
 
             // 生成 manifest（原始 + 翻译）
             const originalProjects = JSON.parse(JSON.stringify(resultProjects));
-            const translatedProjects = await translateProjectData(resultProjects);
+
+            // 加载上一次已翻译的 manifest，用于增量翻译（复用未变更内容的旧翻译）
+            const translatedManifestFileName = hasVersionConfig
+                ? `manifest-${version}.json`
+                : 'manifest.json';
+            const translatedManifestPath = path.join(downloadDirPath, translatedManifestFileName);
+            let previousTranslatedProjects = null;
+            try {
+                if (fs.existsSync(translatedManifestPath)) {
+                    previousTranslatedProjects = JSON.parse(fs.readFileSync(translatedManifestPath, 'utf8'));
+                    console.log(`  📖 加载已有翻译: ${translatedManifestFileName}`);
+                }
+            } catch (e) {
+                console.warn(`  ⚠️ 加载已有翻译失败: ${e.message}`);
+            }
+
+            const translatedProjects = await translateProjectData(resultProjects, previousTranslatedProjects, originalProjects);
 
             // 准备需要保存的文件列表（本地生成、通过 md5 判断是否需要上传）
             let filesToSave;
@@ -604,9 +640,53 @@ function calculateSuccessRate(history) {
 }
 
 /**
- * 翻译项目数据中的指定字段
+ * 从已翻译的 manifest 中提取「原文 -> 翻译后字段」的映射，用于增量翻译
+ * 翻译后的字段格式为 "译文<br><br>原文: 原始文本"
+ * @param {Array|null} previousTranslated
+ * @returns {Object} { description: Map, changelog: Map }
  */
-async function translateProjectData(projects) {
+function buildTranslationLookup(previousTranslated) {
+    const lookup = { description: new Map(), changelog: new Map() };
+    if (!Array.isArray(previousTranslated)) return lookup;
+
+    const extractOriginal = (text) => {
+        if (typeof text !== 'string') return null;
+        const markers = ['<br><br>原文: ', '\n\n原文: '];
+        for (const marker of markers) {
+            const idx = text.indexOf(marker);
+            if (idx !== -1) {
+                return text.substring(idx + marker.length);
+            }
+        }
+        return null;
+    };
+
+    for (const project of previousTranslated) {
+        if (!project) continue;
+        const origDesc = extractOriginal(project.description);
+        if (origDesc !== null) {
+            lookup.description.set(origDesc, project.description);
+        }
+        if (Array.isArray(project.versions)) {
+            for (const version of project.versions) {
+                if (!version) continue;
+                const origCL = extractOriginal(version.changelog);
+                if (origCL !== null) {
+                    lookup.changelog.set(origCL, version.changelog);
+                }
+            }
+        }
+    }
+    return lookup;
+}
+
+/**
+ * 翻译项目数据中的指定字段（增量翻译）
+ * @param {Array} projects - 本次获取的原始项目数据
+ * @param {Array|null} previousTranslated - 上一次已翻译的项目数据，用于复用
+ * @param {Array|null} originalProjects - 本次原始数据（与 projects 结构相同）
+ */
+async function translateProjectData(projects, previousTranslated = null, originalProjects = null) {
     const { BAIDU_TRANSLATE_APPID, BAIDU_TRANSLATE_SECRET, TRANSLATION_TARGET_LANGUAGE, TRANSLATION_SOURCE_LANGUAGE } = process.env;
     if (!BAIDU_TRANSLATE_APPID || !BAIDU_TRANSLATE_SECRET) {
         console.log('Baidu Translation API not configured, skipping plugin data translation.');
@@ -621,13 +701,21 @@ async function translateProjectData(projects) {
 
         console.log(`Translation config: ${sourceLang} -> ${targetLang}`);
 
+        // 构建增量翻译查找表：原文 -> 已翻译字段
+        const lookup = buildTranslationLookup(previousTranslated);
+        console.log(`  📚 增量翻译查找表: ${lookup.description.size} 条 description, ${lookup.changelog.size} 条 changelog`);
+
         const translatedProjects = JSON.parse(JSON.stringify(projects));
 
         for (const project of translatedProjects) {
             console.log(`Translating project: ${project.name || 'Unknown'}`);
 
             if (project.description) {
-                if (shouldTranslateText(project.description)) {
+                const cached = lookup.description.get(project.description);
+                if (cached !== undefined) {
+                    project.description = cached;
+                    console.log(`  ♻️ Reusing previous translation for description`);
+                } else if (shouldTranslateText(project.description)) {
                     try {
                         const originalDescription = project.description;
                         const translated = await translator.translate(originalDescription, sourceLang, targetLang);
@@ -644,7 +732,11 @@ async function translateProjectData(projects) {
             if (project.versions) {
                 for (const version of project.versions) {
                     if (version.changelog) {
-                        if (shouldTranslateText(version.changelog)) {
+                        const cached = lookup.changelog.get(version.changelog);
+                        if (cached !== undefined) {
+                            version.changelog = cached;
+                            console.log(`  ♻️ Reusing previous translation for changelog (v${version.version})`);
+                        } else if (shouldTranslateText(version.changelog)) {
                             try {
                                 const originalChangelog = version.changelog;
                                 const translated = await translator.translate(originalChangelog, sourceLang, targetLang);

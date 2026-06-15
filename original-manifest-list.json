@@ -65,7 +65,8 @@
       },
       "10.11": {
         "title": "预览版本 (Jellyfin 10.11+)",
-        "description": "适用于 Jellyfin 10.11+ 的 IntroSkipper 插件，包含性能优化和新功能"
+        "description": "适用于 Jellyfin 10.11+ 的 IntroSkipper 插件，包含性能优化和新功能",
+        "userAgentVersion": "10.11.0"
       }
     }
   },
