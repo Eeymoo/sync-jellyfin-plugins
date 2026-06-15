@@ -110,16 +110,19 @@ class BaiduTranslator {
             });
 
             console.log(`  🌐 Translating text (${text.length} chars): ${text.substring(0, 50)}...`);
-            
-            const response = await axios.get(`${this.apiUrl}?${params}`, {
-                timeout: 10000
+
+            // 使用 POST 请求，避免长文本导致 URL 超限
+            const response = await axios.post(this.apiUrl, params, {
+                timeout: 10000,
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             });
 
             if (response.data.error_code) {
                 throw new Error(`Translation API Error ${response.data.error_code}: ${response.data.error_msg}`);
             }
 
-            const translatedText = response.data.trans_result[0].dst;
+            // 百度 API 会按行拆分 trans_result，需要拼接所有结果
+            const translatedText = response.data.trans_result.map(r => r.dst).join('\n');
             
             // 缓存翻译结果 - 使用哈希键
             this.translationCache.set(cacheKey, translatedText);
