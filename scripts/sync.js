@@ -163,6 +163,25 @@ async function uploadBufferToOSS(content, ossKey) {
 }
 
 /**
+ * 从 OSS 下载已翻译的 manifest，用于增量翻译
+ * @param {string} ossKey
+ * @returns {Promise<Array|null>}
+ */
+async function downloadTranslatedManifestFromOSS(ossKey) {
+    try {
+        const result = await bucket.get(ossKey);
+        if (!result) return null;
+        const text = await new Response(result.content).text();
+        if (!text || !text.trim()) return null;
+        return JSON.parse(text);
+    } catch (err) {
+        if (err.code === 'NoSuchKey' || err.status === 404) return null;
+        console.warn(`  ⚠ 从 OSS 加载已有翻译失败 (${ossKey}): ${err.message}`);
+        return null;
+    }
+}
+
+/**
  * 处理单个 manifest 条目：下载并上传插件文件
  * 核心优化：先与 OSS 已同步状态做差异对比，未变化的文件直接跳过
  *
@@ -298,18 +317,32 @@ async function processManifestItem(item, existingItem = null) {
             const originalProjects = JSON.parse(JSON.stringify(resultProjects));
 
             // 加载上一次已翻译的 manifest，用于增量翻译（复用未变更内容的旧翻译）
+            // 优先从本地读取，本地不存在则从 OSS 拉取
             const translatedManifestFileName = hasVersionConfig
                 ? `manifest-${version}.json`
                 : 'manifest.json';
+            const translatedOssKey = `plugins/${itemName}/${translatedManifestFileName}`;
             const translatedManifestPath = path.join(downloadDirPath, translatedManifestFileName);
+
             let previousTranslatedProjects = null;
-            try {
-                if (fs.existsSync(translatedManifestPath)) {
-                    previousTranslatedProjects = JSON.parse(fs.readFileSync(translatedManifestPath, 'utf8'));
-                    console.log(`  📖 加载已有翻译: ${translatedManifestFileName}`);
+            const forceTranslate = process.env.FORCE_TRANSLATE === 'true' || process.env.FORCE_TRANSLATE === '1';
+
+            if (!forceTranslate) {
+                try {
+                    if (fs.existsSync(translatedManifestPath)) {
+                        previousTranslatedProjects = JSON.parse(fs.readFileSync(translatedManifestPath, 'utf8'));
+                        console.log(`  📖 从本地加载已有翻译: ${translatedManifestFileName}`);
+                    } else {
+                        previousTranslatedProjects = await downloadTranslatedManifestFromOSS(translatedOssKey);
+                        if (previousTranslatedProjects) {
+                            console.log(`  📖 从 OSS 加载已有翻译: ${translatedOssKey}`);
+                        }
+                    }
+                } catch (e) {
+                    console.warn(`  ⚠️ 加载已有翻译失败: ${e.message}`);
                 }
-            } catch (e) {
-                console.warn(`  ⚠️ 加载已有翻译失败: ${e.message}`);
+            } else {
+                console.log(`  🔴 FORCE_TRANSLATE=true，跳过增量翻译，强制全量翻译`);
             }
 
             const translatedProjects = await translateProjectData(resultProjects, previousTranslatedProjects, originalProjects);

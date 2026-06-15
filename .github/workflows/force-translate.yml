@@ -1,0 +1,46 @@
+name: Force Translate
+
+on:
+  workflow_dispatch:  # 仅支持手动触发
+
+jobs:
+
+  build:
+
+    env:
+      OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
+      OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
+      BAIDU_TRANSLATE_APPID: ${{ secrets.BAIDU_TRANSLATE_APPID }}
+      BAIDU_TRANSLATE_SECRET: ${{ secrets.BAIDU_TRANSLATE_SECRET }}
+      OSS_BUCKET_NAME: jellyfin-mirror
+      OSS_ENDPOINT: oss-cn-wuhan-lr
+      FORCE_TRANSLATE: 'true'
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+
+    - name: Set up Bun
+      uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: latest
+
+    - name: Install dependencies
+      run: bun install
+
+    - name: Run sync script (force translate)
+      run: bun run sync
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add .
+        if git diff --cached --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "action: force translate commit"
+          git push origin master
+        fi
