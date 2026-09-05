@@ -41,7 +41,7 @@ function sleep(ms) {
 }
 
 function md5hex(text) {
-    return crypto.createHash('md5').update(text).digest('hex');
+    return crypto.createHash('sha256').update(text).digest('hex');
 }
 
 /**
